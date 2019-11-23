@@ -65,7 +65,6 @@ public class AccountDB {
     public ArrayList<AccountBean> queryAcc() throws IOException {
         Connection cnnct;
         PreparedStatement pStmnt;
-        AccountBean ab;
         ArrayList<AccountBean> aab = new <AccountBean> ArrayList();
         try {
             cnnct = getConnection();
@@ -74,13 +73,13 @@ public class AccountDB {
             ResultSet rs;
             rs = pStmnt.executeQuery();
             while (rs.next()) {
-                ab = new AccountBean();
-                ab.setCid(rs.getString(1));
-                ab.setAid(rs.getString(2));
-                ab.setFirstName(rs.getString(3));
-                ab.setLastName(rs.getString(4));
-                ab.setPassword(rs.getString(5));
-                ab.setRole(rs.getString(6));
+                AccountBean ab = new AccountBean();
+                ab.setAid(rs.getString(1));
+                ab.setCid(rs.getString(2));
+                ab.setRole(rs.getString(3));
+                ab.setFirstName(rs.getString(4));
+                ab.setLastName(rs.getString(5));
+                ab.setPassword(rs.getString(6));
                 aab.add(ab);
             }
             pStmnt.close();
@@ -91,6 +90,76 @@ public class AccountDB {
             ex.printStackTrace();
         }
         return aab;
+    }
+    
+        public AccountBean queryCustByAid(String aid){
+        Connection cnnct;
+        PreparedStatement pStmnt; 
+        AccountBean ab = new AccountBean();
+        try {
+            cnnct = getConnection();
+            //get Connection 
+            String preQueryStatement = "SELECT * FROM account WHERE aid=?"; 
+            //get the prepare Statement 
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            //update the placehoder with id 
+            pStmnt.setString(1, aid);
+            ResultSet rs;
+            rs = pStmnt.executeQuery();
+            //execute the query and assign to the result 
+            if (rs.next()) {
+                ab.setAid(rs.getString(1));
+                ab.setCid(rs.getString(2));
+                ab.setRole(rs.getString(3));
+                ab.setFirstName(rs.getString(4));
+                ab.setLastName(rs.getString(5));
+                ab.setPassword(rs.getString(6));
+            } 
+            // set the record detail to the customer bean 
+            pStmnt.close(); 
+            cnnct.close(); 
+        } catch (SQLException ex){
+            while (ex != null) { 
+                ex.printStackTrace();
+                ex = ex.getNextException();
+                }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return ab; 
+    } 
+    
+    public boolean editAcc(AccountBean ab) {
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE account SET aid = ?, cid = ?, role = ?,firstname = ?,lastname = ?, password = ? WHERE aid = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, ab.getAid());
+            pStmnt.setString(2, ab.getCid());
+            pStmnt.setString(3, ab.getRole());
+            pStmnt.setString(4, ab.getFirstName());
+            pStmnt.setString(5, ab.getLastName());
+            pStmnt.setString(6, ab.getPassword());
+            pStmnt.setString(7, ab.getAid());
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
     }
     
 }

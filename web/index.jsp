@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <a href="listAccounts.jsp?action=ShowAllAccounts">Account</a>
+        <a href="handleAccount?action=ShowAllAccounts">Account</a><br>
+        <a href="editAccount.jsp">Add Account</a>
     </body>
 </html>

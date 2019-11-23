@@ -16,12 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
- * @author Chan Wai Hong / Chu Shing Fung
+ * @author Porygon
  */
-@WebServlet(name = "HandleAccount", urlPatterns = {"/handleAccount"})
-public class HandleAccount extends HttpServlet {
+@WebServlet(name = "HandleEditAccount", urlPatterns = {"/handleEditAccount"})
+public class HandleEditAccount extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,33 +44,38 @@ public class HandleAccount extends HttpServlet {
         dbUrl = getServletContext().getInitParameter("dbUrl"); 
         //2.  create a new db object  with the parameter
         db = new AccountDB(dbUrl,dbUser,dbPassword);
-    } 
+    }  
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+
         String action = request.getParameter("action");
-        if ("showAllAccounts".equalsIgnoreCase(action)) {
-            ArrayList<AccountBean> accounts = db.queryAcc(); 
-            request.setAttribute("accounts", accounts);
-            //redirect
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listAccounts.jsp");
-            rd.forward(request, response);
-        }else if("getAccountByAid".equalsIgnoreCase(action)){
-            String aid = request.getParameter("aid");
-            AccountBean account = db.queryCustByAid(aid);	 
-            request.setAttribute("a", account);
-        // redirect the result
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/editAccount.jsp");
-            rd.forward(request, response);
-        }else if("showAllStudents".equalsIgnoreCase(action)){
-            
-        }else {
+        //get the parameter, action, from users
+        String aid,cid,role,firstname,lastname,password;
+        aid = request.getParameter("aid");
+        cid = request.getParameter("cid");
+        role = request.getParameter("role");
+        firstname = request.getParameter("firstname");
+        lastname = request.getParameter("lastname");
+        password = request.getParameter("password");
+        if ("add".equalsIgnoreCase(action)) {
+          // call the database operations    
+            db.addAccount(aid, cid, role, firstname, lastname, password);
+            response.sendRedirect("handleAccount?action=ShowAllAccounts");
+        }else if("edit".equalsIgnoreCase(action)){
+            AccountBean ab = new AccountBean(aid, cid, role, firstname, lastname, password);
+            if(db.editAcc(ab)){
+            response.sendRedirect("handleAccount?action=ShowAllAccounts");
+            }else{
+                PrintWriter out = response.getWriter();
+                out.print("False");
+            }
+        } else {
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
         }
+        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

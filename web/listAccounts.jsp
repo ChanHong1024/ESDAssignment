@@ -30,8 +30,8 @@
                 out.println("<td>" + a.getLastName() + "</td>");
                 out.println("<td>" + a.getPassword() + "</td>");
                 out.println("<td>" + a.getRole() + "</td>");
-                out.println("<td><a href=\"handleCustomer?action=delete&id=" + a.getAid() + "\">delete</a></td>");
-                out.println("<td><a href=\"handleCustomer?action=getEditCustomer&id=" + a.getAid() + "\">edit</a></td>");
+                out.println("<td><a href=\"handleAccount?action=delete&id=" + a.getAid() + "\">delete</a></td>");
+                out.println("<td><a href=\"handleAccount?action=getAccountByAid&aid=" + a.getAid() + "\">edit</a></td>");
                 out.println("</tr>");
             }
             out.println("</table>");
