@@ -5,6 +5,7 @@
  */
 package ict.servlet;
 
+import ict.db.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -29,10 +30,29 @@ public class HandleLogin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private AccountDB db;
+    
+    @Override
+    public void init() {
+        //1.  obtain the context-param, dbUser, dbPassword and dbUrl which defined in web.xml
+        String dbUser,dbPassword,dbUrl;
+        dbUser = getServletContext().getInitParameter("dbUser");
+        dbPassword = getServletContext().getInitParameter("dbPassword");
+        dbUrl = getServletContext().getInitParameter("dbUrl"); 
+        //2.  create a new db object  with the parameter
+        db = new AccountDB(dbUrl,dbUser,dbPassword);
+    } 
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getParameter("");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        if(db.verifyAcc(email, password)){
+            
+        }else{
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
