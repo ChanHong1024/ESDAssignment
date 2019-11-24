@@ -5,6 +5,7 @@
  */
 package ict.servlet;
 
+import ict.bean.AccountBean;
 import ict.db.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,8 +51,10 @@ public class HandleLogin extends HttpServlet {
         String aid = request.getParameter("aid");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
-        if(db.verifyAcc(aid, password).getAid()!= null){
+        AccountBean ab = db.verifyAcc(aid, password);
+        if(ab.getAid()!= null){
              session.setAttribute("isLoggedIn", "true");
+             session.setAttribute("role", ab.getRole());
              response.sendRedirect("index.jsp");
         }else{
             PrintWriter out = response.getWriter();

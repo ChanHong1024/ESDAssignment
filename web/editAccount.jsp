@@ -35,11 +35,11 @@
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Attendence <sup>2</sup></div>
+                    <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
                 </a>
 
                 <!-- Divider -->
@@ -345,17 +345,17 @@
                             </div>
                             <div class="card-body">
                                 <form  method="get" action="handleEditAccount">
-                                    <input class="form-control" type="hidden" name="action"  value="<%=type%>"/>
-                                    Aid  <input class="form-control" name="aid"  type="text" value="<%=aid%>"/> <br>
-                                    Cid <input class="form-control" name="cid"  type="text" value="<%=cid%>"/> <br>
-                                    Role <select class="form-control" name="role">
+                                    <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
+                                    Aid  <input class="form-control" name="aid"  type="text" value="<%=aid%>" <%if(type.equalsIgnoreCase("edit")){out.print("readonly");}%>/> <br>
+                                    Cid <input class="form-control" name="cid"  type="text" value="<%=cid%>" required/> <br>
+                                    Role <select class="form-control" name="role" required>
                                         <option value="student" <%if(role.equalsIgnoreCase("student")){out.print("selected");}%>>student</option>
                                         <option value="teacher" <%if(role.equalsIgnoreCase("teacher")){out.print("selected");}%>>teacher</option>
                                         <option value="admin" <%if(role.equalsIgnoreCase("admin")){out.print("selected");}%>>admin</option>
                                         </select><br>
-                                    First Name <input class="form-control" name="firstname"  type="text" value="<%=firstname%>"/> <br>
-                                    First Name <input class="form-control" name="lastname"  type="text" value="<%=lastname%>"/> <br>
-                                    Password <input class="form-control" name="password"  type="text" value="<%=password%>"/> <br>
+                                    First Name <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
+                                    Last Name <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
+                                    Password <input class="form-control" name="password"  type="text" value="<%=password%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>
                             </div>

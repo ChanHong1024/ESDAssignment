@@ -29,11 +29,11 @@ if(session.getAttribute("isLoggedIn")==null){
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-check-circle"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Attendence <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
       </a>
 
       <!-- Divider -->
