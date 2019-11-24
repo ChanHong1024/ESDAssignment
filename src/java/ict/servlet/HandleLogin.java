@@ -54,7 +54,12 @@ public class HandleLogin extends HttpServlet {
         AccountBean ab = db.verifyAcc(aid, password);
         if(ab.getAid()!= null){
              session.setAttribute("isLoggedIn", "true");
+             session.setAttribute("firstname", ab.getFirstName());
+             session.setAttribute("lastname", ab.getLastName());
+             session.setAttribute("aid", ab.getAid());
+             session.setAttribute("cid", ab.getCid());
              session.setAttribute("role", ab.getRole());
+             
              response.sendRedirect("index.jsp");
         }else{
             PrintWriter out = response.getWriter();

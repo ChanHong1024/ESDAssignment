@@ -15,6 +15,8 @@
     String firstname = a.getFirstName() != null ? a.getFirstName() : "";
     String lastname = a.getLastName() != null ? a.getLastName() : "";
     String password = a.getPassword() != null ? a.getPassword() : "";
+    String fname = (String)session.getAttribute("firstname");
+    String lname = (String)session.getAttribute("lastname");
 %>
 <html>
     <head>
@@ -304,7 +306,7 @@
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=fname+" "+lname%></span>
                                     <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                                 </a>
                                 <!-- Dropdown - User Information -->
