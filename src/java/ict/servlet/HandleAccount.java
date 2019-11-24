@@ -57,7 +57,7 @@ public class HandleAccount extends HttpServlet {
             rd.forward(request, response);
         }else if("getAccountByAid".equalsIgnoreCase(action)){
             String aid = request.getParameter("aid");
-            AccountBean account = db.queryCustByAid(aid);	 
+            AccountBean account = db.queryAccByAid(aid);	 
             request.setAttribute("a", account);
         // redirect the result
             RequestDispatcher rd;

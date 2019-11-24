@@ -92,7 +92,7 @@ public class AccountDB {
         return aab;
     }
     
-        public AccountBean queryCustByAid(String aid){
+        public AccountBean queryAccByAid(String aid){
         Connection cnnct;
         PreparedStatement pStmnt; 
         AccountBean ab = new AccountBean();
