@@ -47,7 +47,7 @@
                   </div>
                     <form class="user" method="post" action="handleLogin">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="text" class="form-control form-control-user" name="aid" id="aid" aria-describedby="emailHelp" placeholder="Enter Account ID">
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password">
@@ -58,17 +58,14 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </a>
+                        <input type="submit" value="submit"  class="btn btn-primary btn-user btn-block"/>
                     <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                      <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
                   </form>
+                    <% 
+                    if(request.getParameter("v")!=null && request.getParameter("v").equalsIgnoreCase("false")){
+                        out.println("<div class='text-center'><p style='color:red;'>Account or Password incorrect!</p></div>");
+                    } 
+                    %>
                   <hr>
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>

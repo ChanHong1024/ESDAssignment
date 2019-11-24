@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
-if(session.getAttribute("isLoggedin")==null){
+if(session.getAttribute("isLoggedIn")==null){
     response.sendRedirect("login.jsp");
 }
 %>
@@ -649,7 +649,7 @@ if(session.getAttribute("isLoggedin")==null){
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="handleLogout">Logout</a>
         </div>
       </div>
     </div>

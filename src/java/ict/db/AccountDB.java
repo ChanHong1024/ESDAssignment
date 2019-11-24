@@ -128,14 +128,15 @@ public class AccountDB {
         }
         return ab; 
     }
-        public boolean verifyAcc(String aid,String password){
+        public AccountBean verifyAcc(String aid,String password){
         Connection cnnct;
         PreparedStatement pStmnt; 
+        AccountBean ab = new AccountBean();
         boolean isSuccess = false;
         try {
             cnnct = getConnection();
             //get Connection 
-            String preQueryStatement = "SELECT * FROM account WHERE aid=? and password=?"; 
+            String preQueryStatement = "SELECT * FROM account WHERE aid=? AND password=?"; 
             //get the prepare Statement 
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             //update the placehoder with id 
@@ -143,9 +144,14 @@ public class AccountDB {
             pStmnt.setString(2, password);
             ResultSet rs;
             rs = pStmnt.executeQuery();
-            if (rs.getRow() >= 1) {
-                isSuccess = true;
-            }
+            if (rs.next()) {
+                ab.setAid(rs.getString(1));
+                ab.setCid(rs.getString(2));
+                ab.setRole(rs.getString(3));
+                ab.setFirstName(rs.getString(4));
+                ab.setLastName(rs.getString(5));
+                ab.setPassword(rs.getString(6));
+            } 
             pStmnt.close(); 
             cnnct.close(); 
         } catch (SQLException ex){
@@ -156,8 +162,8 @@ public class AccountDB {
         }catch(IOException ex){
             ex.printStackTrace();
         }
-        return isSuccess; 
-    }   
+        return ab; 
+    }    
         
     
     public boolean editAcc(AccountBean ab) {

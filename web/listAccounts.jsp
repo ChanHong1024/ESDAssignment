@@ -352,7 +352,8 @@
                         <th>Last Name</th>
                         <th>password</th>
                         <th>Role</th>
-                        <th colspan="2">Action</th>
+                        <th class=""></th>
+                        <th></th>
                         </tr>
                       </thead>
                       <tfoot>
@@ -363,18 +364,11 @@
                         <th>Last Name</th>
                         <th>password</th>
                         <th>Role</th>
-                        <th colspan="2">Action</th>
+                        <th></th>
+                        <th></th>
                         </tr>
                       </tfoot>
                       <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>2011/04/25</td>
-                          <td>$320,800</td>
-                        </tr>
                         <%
                             ArrayList<AccountBean> accounts = (ArrayList<AccountBean>)request.getAttribute("accounts");
                             for (int i = 0; i < accounts.size(); i++) {
@@ -437,7 +431,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-              <a class="btn btn-primary" href="login.html">Logout</a>
+              <a class="btn btn-primary" href="handleLogout">Logout</a>
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@
  */
 package ict.servlet;
 
-import ict.db.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,8 +18,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Porygon
  */
-@WebServlet(name = "HandleLogin", urlPatterns = {"/handleLogin"})
-public class HandleLogin extends HttpServlet {
+@WebServlet(name = "HandleLogout", urlPatterns = {"/handleLogout"})
+public class HandleLogout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,33 +30,12 @@ public class HandleLogin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private AccountDB db;
-    
-    @Override
-    public void init() {
-        //1.  obtain the context-param, dbUser, dbPassword and dbUrl which defined in web.xml
-        String dbUser,dbPassword,dbUrl;
-        dbUser = getServletContext().getInitParameter("dbUser");
-        dbPassword = getServletContext().getInitParameter("dbPassword");
-        dbUrl = getServletContext().getInitParameter("dbUrl"); 
-        //2.  create a new db object  with the parameter
-        db = new AccountDB(dbUrl,dbUser,dbPassword);
-    } 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String aid = request.getParameter("aid");
-        String password = request.getParameter("password");
         HttpSession session = request.getSession();
-        if(db.verifyAcc(aid, password).getAid()!= null){
-             session.setAttribute("isLoggedIn", "true");
-             response.sendRedirect("index.jsp");
-        }else{
-            PrintWriter out = response.getWriter();
-            out.println("<h1>No such action!!!</h1>");
-            response.sendRedirect("login.jsp?v=false");
-        }
+        session.removeAttribute("isLoggedIn");
+        response.sendRedirect("login.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
