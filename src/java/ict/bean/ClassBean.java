@@ -21,10 +21,6 @@ public class ClassBean {
         this.cid = cid;
         this.className = className;
     }
-
-    public ClassBean() {
-        
-    }
     
     public String getCid(){
         return cid; 
