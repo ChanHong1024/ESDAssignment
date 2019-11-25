@@ -6,9 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
-
-String firstname = (String)session.getAttribute("firstname");
-String lastname = (String)session.getAttribute("lastname");
+    String firstname = (String)session.getAttribute("firstname");
+    String lastname = (String)session.getAttribute("lastname");
 %>
 <!DOCTYPE html>
 <html>
@@ -64,7 +63,7 @@ String lastname = (String)session.getAttribute("lastname");
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Account Control:</h6>
             <a class="collapse-item" href="editAccount.jsp">Add an account</a>
-            <a class="collapse-item" href="handleAccount?action=ShowAllAccounts">List Account</a>
+            <a class="collapse-item" href="TakeAttendance?action=list">List Account</a>
           </div>
         </div>
       </li>

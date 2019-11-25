@@ -13,6 +13,9 @@ public class SchoolDayBean {
     private String cid;
     private String date;
     
+    public SchoolDayBean(){
+    }
+    
     public SchoolDayBean(String cid, String date){
         this.cid = cid;
         this.date = date;

@@ -16,7 +16,6 @@ public class AttendanceBean {
     private boolean status;
     
     public AttendanceBean(){
-        
     }
      
     public AttendanceBean(String date,String cid,String aid,boolean status){

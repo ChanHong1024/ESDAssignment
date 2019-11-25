@@ -13,6 +13,9 @@ public class ClassBean {
     private String cid;
     private String className;
     
+    public ClassBean(){
+    }
+    
     public ClassBean(String cid, String className){
         this.cid = cid;
         this.className = className;
