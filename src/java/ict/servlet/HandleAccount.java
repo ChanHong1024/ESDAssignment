@@ -48,7 +48,7 @@ public class HandleAccount extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        if ("showAllAccounts".equalsIgnoreCase(action)) {
+        if ("showAll".equalsIgnoreCase(action)) {
             ArrayList<AccountBean> accounts = db.queryAcc(); 
             request.setAttribute("accounts", accounts);
             //redirect
