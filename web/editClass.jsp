@@ -6,15 +6,11 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<jsp:useBean id="a" scope="request" class="ict.bean.AccountBean"/>
+<jsp:useBean id="c" scope="request" class="ict.bean.ClassBean"/>
 <%
-    String type = a.getAid() != null ? "edit" : "add";
-    String aid = a.getAid() != null ? a.getAid() : "";
-    String cid = a.getCid() != null ? a.getCid() : "";
-    String role = a.getRole() != null ? a.getRole() : "";
-    String firstname = a.getFirstName() != null ? a.getFirstName() : "";
-    String lastname = a.getLastName() != null ? a.getLastName() : "";
-    String password = a.getPassword() != null ? a.getPassword() : "";
+    String type = c.getCid() != null ? "Edit" : "Create";
+    String cid = c.getCid() != null ? c.getCid() : "";
+    String className = c.getClassName() != null ? c.getClassName() : "";
     String fname = (String)session.getAttribute("firstname");
     String lname = (String)session.getAttribute("lastname");
 %>
@@ -328,24 +324,16 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800"><%=type%> account</h1>
+                        <h1 class="h3 mb-4 text-gray-800"><%=type%> Class</h1>
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Account</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Class</h6>
                             </div>
                             <div class="card-body">
-                                <form  method="get" action="handleEditAccount">
+                                <form  method="get" action="handleEditClass">
                                     <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
-                                    Aid  <input class="form-control" name="aid"  type="text" value="<%=aid%>" <%if(type.equalsIgnoreCase("edit")){out.print("readonly");}%>/> <br>
-                                    Cid <input class="form-control" name="cid"  type="text" value="<%=cid%>" required/> <br>
-                                    Role <select class="form-control" name="role" required>
-                                        <option value="student" <%if(role.equalsIgnoreCase("student")){out.print("selected");}%>>Student</option>
-                                        <option value="teacher" <%if(role.equalsIgnoreCase("teacher")){out.print("selected");}%>>Teacher</option>
-                                        <option value="admin" <%if(role.equalsIgnoreCase("admin")){out.print("selected");}%>>Admin</option>
-                                        </select><br>
-                                    First Name <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
-                                    Last Name <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
-                                    Password <input class="form-control" name="password"  type="text" value="<%=password%>" required/> <br>
+                                    Class ID  <input class="form-control" name="cid"  type="text" value="<%=cid%>"/> <br>
+                                    Class Name <input class="form-control" name="className"  type="text" value="<%=className%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>
                             </div>

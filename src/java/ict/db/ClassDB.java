@@ -34,13 +34,16 @@ public class ClassDB {
     }
  
     
-    public ArrayList<ClassBean> queryClass() throws IOException {
+    public ArrayList<ClassBean> queryClass(){
         Connection cnnct;
         PreparedStatement pStmnt;
         ArrayList<ClassBean> acb = new <ClassBean> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT class.cid,className,count(account.cid) AS population FROM class,account WHERE role != \"teacher\" AND class.cid=account.cid GROUP BY class.cid ";
+            String preQueryStatement =  "SELECT class.cid,className,count(account.cid) AS \"population\"\n" +
+                                        "FROM class\n" +
+                                        "LEFT JOIN account ON class.cid = account.cid\n" +
+                                        "GROUP BY class.cid;";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             ResultSet rs;
             rs = pStmnt.executeQuery();
@@ -57,6 +60,52 @@ public class ClassDB {
             ex.printStackTrace();
         }
         return acb;
+    }
+    
+    public boolean addClass(String cid,String className){
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+        try{
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO class VALUES(?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1,cid);
+            pStmnt.setString(2,className);
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount > 1){
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        }catch(SQLException | IOException ex){
+           ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+    
+        public boolean editAcc(ClassBean cb) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE account SET cid = ?, className = ? WHERE cid = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, cb.getCid());
+            pStmnt.setString(2, cb.getClassName());
+            pStmnt.setString(3, cb.getCid());
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
     }
     
 }

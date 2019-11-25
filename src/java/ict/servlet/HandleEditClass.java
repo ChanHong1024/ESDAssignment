@@ -5,8 +5,8 @@
  */
 package ict.servlet;
 
-import ict.bean.AccountBean;
-import ict.db.AccountDB;
+import ict.bean.ClassBean;
+import ict.db.ClassDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Porygon
  */
-@WebServlet(name = "HandleEditAccount", urlPatterns = {"/handleEditAccount"})
-public class HandleEditAccount extends HttpServlet {
+@WebServlet(name = "HandleEditClass", urlPatterns = {"/handleEditClass"})
+public class HandleEditClass extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,7 +33,7 @@ public class HandleEditAccount extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private AccountDB db;
+    private ClassDB db;
     
     @Override
     public void init() {
@@ -43,7 +43,7 @@ public class HandleEditAccount extends HttpServlet {
         dbPassword = getServletContext().getInitParameter("dbPassword");
         dbUrl = getServletContext().getInitParameter("dbUrl"); 
         //2.  create a new db object  with the parameter
-        db = new AccountDB(dbUrl,dbUser,dbPassword);
+        db = new ClassDB(dbUrl,dbUser,dbPassword);
     }  
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -51,21 +51,17 @@ public class HandleEditAccount extends HttpServlet {
 
         String action = request.getParameter("action");
         //get the parameter, action, from users
-        String aid,cid,role,firstname,lastname,password;
-        aid = request.getParameter("aid");
+        String cid,className;
         cid = request.getParameter("cid");
-        role = request.getParameter("role");
-        firstname = request.getParameter("firstname");
-        lastname = request.getParameter("lastname");
-        password = request.getParameter("password");
+        className = request.getParameter("className");
         if ("Create".equalsIgnoreCase(action)) {
           // call the database operations    
-            db.addAccount(aid, cid, role, firstname, lastname, password);
-            response.sendRedirect("handleAccount?action=showAll");
+            db.addClass(cid, className);
+            response.sendRedirect("handleClass?action=showAll");
         }else if("Edit".equalsIgnoreCase(action)){
-            AccountBean ab = new AccountBean(aid, cid, role, firstname, lastname, password);
-            if(db.editAcc(ab)){
-            response.sendRedirect("handleAccount?action=showAll");
+            ClassBean cb = new ClassBean(cid,className);
+            if(db.editAcc(cb)){
+            response.sendRedirect("handleClass?action=showAll");
             }else{
                 PrintWriter out = response.getWriter();
                 out.print("False");

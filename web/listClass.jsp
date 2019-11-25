@@ -342,6 +342,7 @@
                                                 <th>Class ID</th>
                                                 <th>Class Name</th>
                                                 <th>Population</th>
+                                                <th>Edit</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -349,6 +350,7 @@
                                                 <th>Class ID</th>
                                                 <th>Class Name</th>
                                                 <th>Population</th>
+                                                <th>Edit</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -360,6 +362,7 @@
                                                     out.println("<td>" + c.getCid() + "</td>");
                                                     out.println("<td>" + c.getClassName() + "</td>");
                                                     out.println("<td>" + c.getPopulation() + "</td>");
+                                                    out.println("<td><a href=\"handleClass?action=getClassByCid&cid=" + c.getCid() + "\">edit</a></td>");
                                                     out.println("</tr>");
                                                 }
                                             %>
