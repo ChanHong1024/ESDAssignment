@@ -62,7 +62,7 @@ public class HandleLogin extends HttpServlet {
              if(ab.getRole().equalsIgnoreCase("student")){
                 response.sendRedirect("handleAttendance?action=showMyAtt");
              }else if(ab.getRole().equalsIgnoreCase("admin")){
-                 response.sendRedirect("index.jsp");
+                 response.sendRedirect("adminIndex.jsp");
              }else if(ab.getRole().equalsIgnoreCase("teacher")){
                  response.sendRedirect("teacherIndex.jsp");
              }

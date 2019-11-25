@@ -6,7 +6,9 @@
 package ict.servlet;
 
 import ict.bean.AccountBean;
+import ict.bean.ClassBean;
 import ict.db.AccountDB;
+import ict.db.ClassDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Chan Wai Hong / Chu Shing Fung
  */
-@WebServlet(name = "HandleAccount", urlPatterns = {"/handleAccount"})
-public class HandleAccount extends HttpServlet {
+@WebServlet(name = "HandleClass", urlPatterns = {"/handleClass"})
+public class HandleClass extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,7 +33,7 @@ public class HandleAccount extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private AccountDB db;
+    private ClassDB db;
     
     @Override
     public void init() {
@@ -41,7 +43,7 @@ public class HandleAccount extends HttpServlet {
         dbPassword = getServletContext().getInitParameter("dbPassword");
         dbUrl = getServletContext().getInitParameter("dbUrl"); 
         //2.  create a new db object  with the parameter
-        db = new AccountDB(dbUrl,dbUser,dbPassword);
+        db = new ClassDB(dbUrl,dbUser,dbPassword);
     } 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -49,23 +51,13 @@ public class HandleAccount extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if ("showAll".equalsIgnoreCase(action)) {
-            ArrayList<AccountBean> accounts = db.queryAcc(); 
-            request.setAttribute("accounts", accounts);
+            ArrayList<ClassBean> classes = db.queryClass(); 
+            request.setAttribute("classes", classes);
             //redirect
             RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listAccounts.jsp");
+            rd = getServletContext().getRequestDispatcher("/listClass.jsp");
             rd.forward(request, response);
-        }else if("getAccountByAid".equalsIgnoreCase(action)){
-            String aid = request.getParameter("aid");
-            AccountBean account = db.queryAccByAid(aid);	 
-            request.setAttribute("a", account);
-        // redirect the result
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/editAccount.jsp");
-            rd.forward(request, response);
-        }else if("showAllStudents".equalsIgnoreCase(action)){
-            
-        }else {
+        }else{
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
         }

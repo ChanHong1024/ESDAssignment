@@ -12,6 +12,7 @@ package ict.bean;
 public class ClassBean {
     private String cid;
     private String className;
+    private int population=0;
     
     public ClassBean(){
     }
@@ -20,6 +21,10 @@ public class ClassBean {
         this.cid = cid;
         this.className = className;
     }
+
+    public ClassBean() {
+        
+    }
     
     public String getCid(){
         return cid; 
@@ -27,6 +32,14 @@ public class ClassBean {
     
     public void setCid(String cid){
         this.cid = cid;
+    }
+    
+    public int getPopulation(){
+        return population; 
+    }
+    
+    public void setPopulation(int population){
+        this.population = population;
     }
     
     public String getClassName(){
