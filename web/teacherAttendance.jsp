@@ -41,6 +41,11 @@
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script>
+            $( document ).ready(function() {
+                $('#datepicker').datepicker();
+            });
+        </script>
         <title>JSP Page</title>
     </head>
     <body id="page-top">
@@ -49,7 +54,7 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
@@ -358,11 +363,6 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Attendance System</h1>
                             <input type="text" id="datepicker" width="276" />
-                            <script>
-                                $( document ).ready(function() {
-                                    $('#datepicker').datepicker();
-                                });
-                            </script>
                         </div>
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
