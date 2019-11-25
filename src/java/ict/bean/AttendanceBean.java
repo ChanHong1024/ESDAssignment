@@ -14,6 +14,10 @@ public class AttendanceBean {
     private String cid;
     private String aid;
     private boolean status;
+    
+    public AttendanceBean(){
+        
+    }
      
     public AttendanceBean(String date,String cid,String aid,boolean status){
         this.aid = aid;

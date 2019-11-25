@@ -5,24 +5,24 @@
  */
 package ict.servlet;
 
-import ict.bean.AccountBean;
-import ict.db.AccountDB;
+import ict.bean.AttendanceBean;
+import ict.db.AttendanceDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 /**
  *
- * @author Porygon
+ * @author Chan Wai Hong / Chu Shing Fung
  */
-@WebServlet(name = "HandleLogin", urlPatterns = {"/handleLogin"})
-public class HandleLogin extends HttpServlet {
-
+@WebServlet(name = "HandleAttendance", urlPatterns = {"/handleAttendance"})
+public class HandleAttendance extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,7 +32,7 @@ public class HandleLogin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private AccountDB db;
+    private AttendanceDB db;
     
     @Override
     public void init() {
@@ -42,33 +42,24 @@ public class HandleLogin extends HttpServlet {
         dbPassword = getServletContext().getInitParameter("dbPassword");
         dbUrl = getServletContext().getInitParameter("dbUrl"); 
         //2.  create a new db object  with the parameter
-        db = new AccountDB(dbUrl,dbUser,dbPassword);
+        db = new AttendanceDB(dbUrl,dbUser,dbPassword);
     } 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String aid = request.getParameter("aid");
-        String password = request.getParameter("password");
-        HttpSession session = request.getSession();
-        AccountBean ab = db.verifyAcc(aid, password);
-        if(ab.getAid()!= null){
-             session.setAttribute("isLoggedIn", "true");
-             session.setAttribute("firstname", ab.getFirstName());
-             session.setAttribute("lastname", ab.getLastName());
-             session.setAttribute("aid", ab.getAid());
-             session.setAttribute("cid", ab.getCid());
-             session.setAttribute("role", ab.getRole());
-             if(ab.getRole().equalsIgnoreCase("student")){
-                response.sendRedirect("handleAttendance?action=showMyAtt");
-             }else if(ab.getRole().equalsIgnoreCase("admin")){
-                 response.sendRedirect("index.jsp");
-             }
-             
-        }else{
+        String action = request.getParameter("action");
+        if ("showMyAtt".equalsIgnoreCase(action)) {
+            HttpSession session = request.getSession();
+            ArrayList<AttendanceBean> att = db.queryAttByAid((String)session.getAttribute("aid")); 
+            request.setAttribute("att", att);
+            //redirect
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/listMyAttendance.jsp");
+            rd.forward(request, response);
+        }else {
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
-            response.sendRedirect("login.jsp?v=false");
         }
     }
 
