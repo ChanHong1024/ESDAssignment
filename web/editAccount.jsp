@@ -351,9 +351,9 @@
                                     Aid  <input class="form-control" name="aid"  type="text" value="<%=aid%>" <%if(type.equalsIgnoreCase("edit")){out.print("readonly");}%>/> <br>
                                     Cid <input class="form-control" name="cid"  type="text" value="<%=cid%>" required/> <br>
                                     Role <select class="form-control" name="role" required>
-                                        <option value="student" <%if(role.equalsIgnoreCase("student")){out.print("selected");}%>>student</option>
-                                        <option value="teacher" <%if(role.equalsIgnoreCase("teacher")){out.print("selected");}%>>teacher</option>
-                                        <option value="admin" <%if(role.equalsIgnoreCase("admin")){out.print("selected");}%>>admin</option>
+                                        <option value="student" <%if(role.equalsIgnoreCase("student")){out.print("selected");}%>>Student</option>
+                                        <option value="teacher" <%if(role.equalsIgnoreCase("teacher")){out.print("selected");}%>>Teacher</option>
+                                        <option value="admin" <%if(role.equalsIgnoreCase("admin")){out.print("selected");}%>>Admin</option>
                                         </select><br>
                                     First Name <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
                                     Last Name <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>

@@ -378,7 +378,7 @@ String lastname = (String)session.getAttribute("lastname");
           </div>
         </div>
       </div>
-        <a href="editAccount.jsp">Add Account</a>
+ 
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

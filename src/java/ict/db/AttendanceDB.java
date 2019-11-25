@@ -35,7 +35,7 @@ public class AttendanceDB {
         return DriverManager.getConnection(url,username,password);
     }
     
-    public ArrayList<AttendanceBean> queryAttByAid(String aid){
+   public ArrayList<AttendanceBean> queryAttByAid(String aid){
         Connection cnnct;
         PreparedStatement pStmnt;
         ArrayList<AttendanceBean> aab = new <AttendanceBean> ArrayList();
