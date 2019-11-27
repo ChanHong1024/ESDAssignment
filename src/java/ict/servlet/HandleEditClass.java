@@ -60,7 +60,7 @@ public class HandleEditClass extends HttpServlet {
             response.sendRedirect("handleClass?action=showAll");
         }else if("Edit".equalsIgnoreCase(action)){
             ClassBean cb = new ClassBean(cid,className);
-            if(db.editAcc(cb)){
+            if(db.editClass(cb)){
             response.sendRedirect("handleClass?action=showAll");
             }else{
                 PrintWriter out = response.getWriter();

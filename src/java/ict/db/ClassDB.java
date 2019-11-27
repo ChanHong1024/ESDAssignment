@@ -62,6 +62,39 @@ public class ClassDB {
         return acb;
     }
     
+    public ClassBean queryClassByCid(String cid){
+        Connection cnnct;
+        PreparedStatement pStmnt; 
+        ClassBean ab = new ClassBean();
+        try {
+            cnnct = getConnection();
+            //get Connection 
+            String preQueryStatement = "SELECT * FROM class WHERE cid=?"; 
+            //get the prepare Statement 
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            //update the placehoder with id 
+            pStmnt.setString(1, cid);
+            ResultSet rs;
+            rs = pStmnt.executeQuery();
+            //execute the query and assign to the result 
+            if (rs.next()) {
+                ab.setCid(rs.getString(1));
+                ab.setClassName(rs.getString(2));
+            } 
+            // set the record detail to the customer bean 
+            pStmnt.close(); 
+            cnnct.close(); 
+        } catch (SQLException ex){
+            while (ex != null) { 
+                ex.printStackTrace();
+                ex = ex.getNextException();
+                }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        return ab; 
+    }
+    
     public boolean addClass(String cid,String className){
         Connection cnnct;
         PreparedStatement pStmnt;
@@ -84,14 +117,14 @@ public class ClassDB {
         return isSuccess;
     }
     
-        public boolean editAcc(ClassBean cb) {
+        public boolean editClass(ClassBean cb) {
         Connection cnnct;
         PreparedStatement pStmnt;
         boolean isSuccess = false;
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "UPDATE account SET cid = ?, className = ? WHERE cid = ?";
+            String preQueryStatement = "UPDATE class SET cid = ?, className = ? WHERE cid = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, cb.getCid());
             pStmnt.setString(2, cb.getClassName());

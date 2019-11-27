@@ -17,7 +17,7 @@
     String password = a.getPassword() != null ? a.getPassword() : "";
     String fname = (String)session.getAttribute("firstname");
     String lname = (String)session.getAttribute("lastname");
-%>
+%>    
 <html>
     <head>
         <!-- Custom fonts for this template-->
@@ -27,6 +27,25 @@
         <link href="css/style.min.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/script.min.js"></script>
+        <script>
+        $(document).ready(function(){
+                
+                $("#role").change(function(){
+                    $.get("handleAccount?action=getNewID&role="+$("#role").val(),function(data,status){
+                        $("#aid").val(data);
+                    });
+                });
+        }); 
+        </script>
     </head>
     <body id="page-top">
 
@@ -336,16 +355,16 @@
                             <div class="card-body">
                                 <form  method="get" action="handleEditAccount">
                                     <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
-                                    Aid  <input class="form-control" name="aid"  type="text" value="<%=aid%>" <%if(type.equalsIgnoreCase("edit")){out.print("readonly");}%>/> <br>
-                                    Cid <input class="form-control" name="cid"  type="text" value="<%=cid%>" required/> <br>
-                                    Role <select class="form-control" name="role" required>
+                                    Account ID(10)<small>   *If you change roles or create an account, a new ID is automatically assigned.</small> <input class="form-control" name="aid" id="aid"  type="text" value="<%=aid%>" readonly/> <br>
+                                    Class ID(10)<small>   *If creating / editing an administrator account, please fill in the blanks in this line.</small> <input class="form-control" name="cid"  type="text" value="<%=cid%>" required/> <br>
+                                    Role <select class="form-control" id="role" name="role" required>
                                         <option value="student" <%if(role.equalsIgnoreCase("student")){out.print("selected");}%>>Student</option>
                                         <option value="teacher" <%if(role.equalsIgnoreCase("teacher")){out.print("selected");}%>>Teacher</option>
                                         <option value="admin" <%if(role.equalsIgnoreCase("admin")){out.print("selected");}%>>Admin</option>
                                         </select><br>
-                                    First Name <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
-                                    Last Name <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
-                                    Password <input class="form-control" name="password"  type="text" value="<%=password%>" required/> <br>
+                                    First Name(255) <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
+                                    Last Name(255) <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
+                                    Password(255) <input class="form-control" name="password"  type="text" value="<%=password%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>
                             </div>
@@ -395,14 +414,5 @@
                 </div>
             </div>
         </div>      
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/script.min.js"></script>           
     </body>
 </html>

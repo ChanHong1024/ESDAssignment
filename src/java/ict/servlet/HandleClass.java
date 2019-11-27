@@ -57,6 +57,14 @@ public class HandleClass extends HttpServlet {
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/listClass.jsp");
             rd.forward(request, response);
+        }else if("getClassByCid".equalsIgnoreCase(action)){
+            String cid = request.getParameter("cid");
+            ClassBean classes = db.queryClassByCid(cid);	 
+            request.setAttribute("c", classes);
+        // redirect the result
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/editClass.jsp");
+            rd.forward(request, response);
         }else{
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");

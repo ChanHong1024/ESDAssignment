@@ -9,7 +9,10 @@ import ict.bean.AccountBean;
 import ict.db.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,20 +52,38 @@ public class HandleAccount extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if ("showAll".equalsIgnoreCase(action)) {
-            ArrayList<AccountBean> accounts = db.queryAcc(); 
+            ArrayList<AccountBean> accounts; 
+            try {
+                accounts = db.queryAcc();
             request.setAttribute("accounts", accounts);
             //redirect
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/listAccounts.jsp");
             rd.forward(request, response);
+            } catch (SQLException ex) {
+                PrintWriter out = response.getWriter();
+                out.println(ex.getMessage());
+            }
+        }else if("getNewID".equalsIgnoreCase(action)){
+            try {
+                String role = request.getParameter("role");
+                PrintWriter out = response.getWriter();
+                out.println(db.getNewID(role));
+            } catch (SQLException ex) {
+                Logger.getLogger(HandleAccount.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else if("getAccountByAid".equalsIgnoreCase(action)){
-            String aid = request.getParameter("aid");
-            AccountBean account = db.queryAccByAid(aid);	 
-            request.setAttribute("a", account);
-        // redirect the result
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/editAccount.jsp");
-            rd.forward(request, response);
+            try {
+                String aid = request.getParameter("aid");
+                AccountBean account = db.queryAccByAid(aid);
+                request.setAttribute("a", account);
+                // redirect the result
+                RequestDispatcher rd;
+                rd = getServletContext().getRequestDispatcher("/editAccount.jsp");
+                rd.forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(HandleAccount.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else if("showAllStudents".equalsIgnoreCase(action)){
             
         }else {
