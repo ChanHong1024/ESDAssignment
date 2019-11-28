@@ -118,6 +118,10 @@
                                 <div class="col-lg-6">
                                     <div class="p-5">
                                         <div class="text-center">
+                                            <div class="h1 sidebar-brand-icon rotate-n-15">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="h1">Attendence<sup>2</sup></div>
                                             <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                         </div>
                                         <div class="form-group">
@@ -132,8 +136,8 @@
                                                 <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
-                                        <button onclick="do_login()" class="btn btn-primary btn-user btn-block">Login</button>
                                         <hr>
+                                        <button onclick="do_login()" class="btn btn-primary btn-user btn-block">Login</button>
                                         <hr>
                                         <div class="text-center">
                                             <a class="small" href="forgot-password.html">Forgot Password?</a>
