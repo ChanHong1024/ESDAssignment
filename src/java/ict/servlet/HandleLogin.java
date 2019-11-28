@@ -63,17 +63,11 @@ public class HandleLogin extends HttpServlet {
                 session.setAttribute("aid", ab.getAid());
                 session.setAttribute("cid", ab.getCid());
                 session.setAttribute("role", ab.getRole());
-                if(ab.getRole().equalsIgnoreCase("student")){
-                    response.sendRedirect("handleAttendance?action=showMyAtt");
-                }else if(ab.getRole().equalsIgnoreCase("admin")){
-                    response.sendRedirect("adminIndex.jsp");
-                }else if(ab.getRole().equalsIgnoreCase("teacher")){
-                    response.sendRedirect("teacherIndex.jsp");
-                }
+                PrintWriter out = response.getWriter();
+                out.print("success");
             }else{
                 PrintWriter out = response.getWriter();
-                out.println("<h1>No such action!!!</h1>");
-                response.sendRedirect("login.jsp?v=false");
+                out.print("failed");
             }
         } catch (SQLException ex) {
             Logger.getLogger(HandleLogin.class.getName()).log(Level.SEVERE, null, ex);

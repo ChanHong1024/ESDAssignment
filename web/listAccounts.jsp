@@ -345,8 +345,7 @@
                                                 <th>Last Name</th>
                                                 <th>password</th>
                                                 <th>Role</th>
-                                                <th class=""></th>
-                                                <th></th>
+                                                <th>Edit</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -357,8 +356,7 @@
                                                 <th>Last Name</th>
                                                 <th>password</th>
                                                 <th>Role</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th>Edit</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -373,7 +371,6 @@
                                                     out.println("<td>" + a.getLastName() + "</td>");
                                                     out.println("<td>" + a.getPassword() + "</td>");
                                                     out.println("<td>" + a.getRole() + "</td>");
-                                                    out.println("<td><a href=\"handleAccount?action=delete&id=" + a.getAid() + "\">delete</a></td>");
                                                     out.println("<td><a href=\"handleAccount?action=getAccountByAid&aid=" + a.getAid() + "\">edit</a></td>");
                                                     out.println("</tr>");
                                                 }
@@ -394,7 +391,7 @@
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
+                            <span>Copyright &copy; Chan Wai Hong / Chu Shing Fung 2019</span>
                         </div>
                     </div>
                 </footer>
