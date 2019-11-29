@@ -57,6 +57,15 @@ public class HandleClass extends HttpServlet {
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/listClass.jsp");
             rd.forward(request, response);
+        }if("printAllClass".equalsIgnoreCase(action)) {
+            ArrayList<ClassBean> classes = db.queryClass(); 
+            PrintWriter out = response.getWriter();
+            for(int i=0;i<classes.size();i++){
+                out.print(classes.get(i).getCid());
+                if(i < classes.size()-1){
+                    out.print(",");
+                }
+            }
         }else if("getClassByCid".equalsIgnoreCase(action)){
             String cid = request.getParameter("cid");
             ClassBean classes = db.queryClassByCid(cid);	 

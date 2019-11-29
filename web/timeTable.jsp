@@ -8,11 +8,11 @@
 <!DOCTYPE html>
 <jsp:useBean id="c" scope="request" class="ict.bean.ClassBean"/>
 <%
-    if(session.getAttribute("isLoggedIn")==null){
+    if (session.getAttribute("isLoggedIn") == null) {
         response.sendRedirect("login.jsp");
     }
-    String fname = (String)session.getAttribute("firstname");
-    String lname = (String)session.getAttribute("lastname");
+    String fname = (String) session.getAttribute("firstname");
+    String lname = (String) session.getAttribute("lastname");
 %>
 <html>
     <head>
@@ -30,7 +30,7 @@
         <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
         <!-- Custom scripts for all pages-->
         <script src="js/script.js"></script> 
-        <!-- Custom scripts for calendar-->
+        <!-- Custom scripts/css for calendar-->
         <link href='vendor/core/main.css' rel='stylesheet' />
         <link href='vendor/daygrid/main.css' rel='stylesheet' />
         <link href='vendor/timegrid/main.css' rel='stylesheet' />
@@ -41,34 +41,70 @@
         <script src='vendor/timegrid/main.js'></script>
         <script src='vendor/list/main.js'></script>
         <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
+            function addSelect(value){
+                $("#classSelect").append(new Option(value, value, false));
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                $.get("http://localhost:8080/ESDAssignment/handleClass?action=printAllClass",function(data,status){
+                    var strArray = data.split(",");
+                    strArray.forEach(addSelect);
+                });
+                $("#classSelect").change(function(){
+                var calendarEl = document.getElementById('calendar');
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-              plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-              header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-              },
-              defaultDate: '2019-11-29',
-              editable: true,
-              navLinks: true, // can click day/week names to navigate views
-              eventLimit: true, // allow "more" link when too many events
-              events: {
-                url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=IT114105',
-                failure: function() {
-                    
-                }
-              },
-              loading: function(bool) {
-                document.getElementById('loading').style.display =
-                  bool ? 'block' : 'none';
-              }
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    },
+                    defaultDate: '2019-11-29',
+                    editable: true,
+                    navLinks: true, // can click day/week names to navigate views
+                    eventLimit: true, // allow "more" link when too many events
+                    events: {
+                        url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid='+$("#classSelect").val(),
+                        failure: function () {
+
+                        }
+                    },
+                    loading: function (bool) {
+                        document.getElementById('loading').style.display =
+                                bool ? 'block' : 'none';
+                    }
+                });
+                calendarEl.innerHTML = "";
+                calendar.render();
+                });
+                var calendarEl = document.getElementById('calendar');
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    },
+                    defaultDate: '2019-11-29',
+                    editable: true,
+                    navLinks: true, // can click day/week names to navigate views
+                    eventLimit: true, // allow "more" link when too many events
+                    events: {
+                        url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=IT114105',
+                        failure: function () {
+
+                        }
+                    },
+                    loading: function (bool) {
+                        document.getElementById('loading').style.display =
+                                bool ? 'block' : 'none';
+                    }
+                });
+
+                calendar.render();
             });
-
-            calendar.render();
-          });
 
         </script>
     </head>
@@ -77,107 +113,107 @@
         <!-- Page Wrapper -->
         <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminIndex.jsp">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
-      </a>
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminIndex.jsp">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
+                </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span></a>
+                </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Database
-      </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Database
+                </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-user-alt"></i>
-          <span>Account</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Account Control:</h6>
-            <a class="collapse-item" href="editAccount.jsp">Create Account</a>
-            <a class="collapse-item" href="handleAccount?action=showAll">List Account</a>
-          </div>
-        </div>
-      </li>
-      
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ClassCollapse" aria-expanded="true" aria-controls="ClassCollapse">
-          <i class="fas fa-users"></i>
-          <span>Class</span>
-        </a>
-        <div id="ClassCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Class Control:</h6>
-            <a class="collapse-item" href="editClass.jsp">Create Class</a>
-            <a class="collapse-item" href="handleClass?action=showAll">List Class</a>
-          </div>
-        </div>
-      </li>  
-      
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-user-alt"></i>
+                        <span>Account</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Account Control:</h6>
+                            <a class="collapse-item" href="editAccount.jsp">Create Account</a>
+                            <a class="collapse-item" href="handleAccount?action=showAll">List Account</a>
+                        </div>
+                    </div>
+                </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Student Affairs 
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SchoolDayCollapse" aria-expanded="true" aria-controls="SchoolDayCollapse">
-          <i class="fas fa-users"></i>
-          <span>School Day</span>
-        </a>
-        <div id="SchoolDayCollapse" class="collapse" aria-labelledby="SchoolDayCollapse" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Class Control:</h6>
-            <a class="collapse-item" href="editSD.jsp">Schedule School Day</a>
-            <a class="collapse-item" href="timeTable.jsp">Timetable for each class</a>
-          </div>
-        </div>
-      </li> 
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ClassCollapse" aria-expanded="true" aria-controls="ClassCollapse">
+                        <i class="fas fa-users"></i>
+                        <span>Class</span>
+                    </a>
+                    <div id="ClassCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Class Control:</h6>
+                            <a class="collapse-item" href="editClass.jsp">Create Class</a>
+                            <a class="collapse-item" href="handleClass?action=showAll">List Class</a>
+                        </div>
+                    </div>
+                </li>  
 
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Student Affairs 
+                </div>
 
-    </ul>
-    <!-- End of Sidebar -->
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SchoolDayCollapse" aria-expanded="true" aria-controls="SchoolDayCollapse">
+                        <i class="fas fa-users"></i>
+                        <span>School Day</span>
+                    </a>
+                    <div id="SchoolDayCollapse" class="collapse" aria-labelledby="SchoolDayCollapse" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Class Control:</h6>
+                            <a class="collapse-item" href="editSD.jsp">Schedule School Day</a>
+                            <a class="collapse-item" href="timeTable.jsp">Timetable for each class</a>
+                        </div>
+                    </div>
+                </li> 
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="charts.html">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Charts</span></a>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+            <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
@@ -338,7 +374,7 @@
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=fname+" "+lname%></span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=fname + " " + lname%></span>
                                     <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                                 </a>
                                 <!-- Dropdown - User Information -->
@@ -372,14 +408,21 @@
                     <div class="container-fluid">
 
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Time Table</h1>
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Time Table</h1>
+                            <div>
+                            <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
+                            <select id="classSelect" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            </select>
+                            </div>
+                        </div>
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Class Time Table</h6>
                             </div>
                             <div class="card-body">
-                                  <div id='calendar'></div>
-                                  <div id='loading'>loading...</div>
+                                <div id='calendar'></div>
+                                <div id='loading'>loading...</div>
                             </div>
                         </div>
                     </div>
