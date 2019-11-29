@@ -8,6 +8,9 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    if(session.getAttribute("isLoggedIn")==null){
+        response.sendRedirect("login.jsp");
+    }
     String firstname = (String) session.getAttribute("firstname");
     String lastname = (String) session.getAttribute("lastname");
 %>

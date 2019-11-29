@@ -8,6 +8,9 @@
 <!DOCTYPE html>
 <jsp:useBean id="a" scope="request" class="ict.bean.AccountBean"/>
 <%
+    if(session.getAttribute("isLoggedIn")==null){
+        response.sendRedirect("login.jsp");
+    }
     String type = a.getAid() != null ? "Edit" : "Create";
     String aid = a.getAid() != null ? a.getAid() : "";
     String cid = a.getCid() != null ? a.getCid() : "";

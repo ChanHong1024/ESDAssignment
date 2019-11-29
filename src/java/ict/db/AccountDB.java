@@ -186,36 +186,26 @@ public class AccountDB {
         return ab;
     }
 
-    public boolean editAcc(AccountBean ab) {
-        Connection cnnct = null;
-        PreparedStatement pStmnt = null;
+    public boolean editAcc(AccountBean ab) throws SQLException, IOException {
+        Connection cnnct;
+        PreparedStatement pStmnt;
         boolean isSuccess = false;
-
-        try {
-            cnnct = getConnection();
-            String preQueryStatement = "UPDATE account SET aid = ?, cid = ?, role = ?,firstname = ?,lastname = ?, password = ? WHERE aid = ?";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, ab.getAid());
-            pStmnt.setString(2, ab.getCid());
-            pStmnt.setString(3, ab.getRole());
-            pStmnt.setString(4, ab.getFirstName());
-            pStmnt.setString(5, ab.getLastName());
-            pStmnt.setString(6, ab.getPassword());
-            pStmnt.setString(7, ab.getAid());
-            int rowCount = pStmnt.executeUpdate();
-            if (rowCount >= 1) {
-                isSuccess = true;
-            }
-            pStmnt.close();
-            cnnct.close();
-        } catch (SQLException ex) {
-            while (ex != null) {
-                ex.printStackTrace();
-                ex = ex.getNextException();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        cnnct = getConnection();
+        String preQueryStatement = "UPDATE account SET aid = ?, cid = ?, role = ?,firstname = ?,lastname = ?, password = ? WHERE aid = ?";
+        pStmnt = cnnct.prepareStatement(preQueryStatement);
+        pStmnt.setString(1, ab.getAid());
+        pStmnt.setString(2, ab.getCid());
+        pStmnt.setString(3, ab.getRole());
+        pStmnt.setString(4, ab.getFirstName());
+        pStmnt.setString(5, ab.getLastName());
+        pStmnt.setString(6, ab.getPassword());
+        pStmnt.setString(7, ab.getAid());
+        int rowCount = pStmnt.executeUpdate();
+        if (rowCount >= 1) {
+            isSuccess = true;
         }
+        pStmnt.close();
+        cnnct.close();
         return isSuccess;
     }
 

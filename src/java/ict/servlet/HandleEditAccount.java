@@ -78,12 +78,16 @@ public class HandleEditAccount extends HttpServlet {
                 out.print(Arrays.toString(ex.getStackTrace()));
             }
         }else if("Edit".equalsIgnoreCase(action)){
-            AccountBean ab = new AccountBean(aid, cid, role, firstname, lastname, password);
-            if(db.editAcc(ab)){
-            response.sendRedirect("handleAccount?action=showAll");
-            }else{
-                PrintWriter out = response.getWriter();
-                out.print("False");
+            try {
+                AccountBean ab = new AccountBean(aid, cid, role, firstname, lastname, password);
+                if(db.editAcc(ab)){
+                    response.sendRedirect("handleAccount?action=showAll");
+                }else{
+                    PrintWriter out = response.getWriter();
+                    out.print("False");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(HandleEditAccount.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             PrintWriter out = response.getWriter();
