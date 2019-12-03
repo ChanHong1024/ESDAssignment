@@ -111,7 +111,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Class Control:</h6>
             <a class="collapse-item" href="editSD.jsp">Schedule School Day</a>
-            <a class="collapse-item" href="handleSD?action=showAll">Timetable for each class</a>
+            <a class="collapse-item" href="timeTable.jsp">Timetable for each class</a>
           </div>
         </div>
       </li> 

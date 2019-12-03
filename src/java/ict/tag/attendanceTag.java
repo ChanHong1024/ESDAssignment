@@ -23,6 +23,7 @@ public class attendanceTag extends SimpleTagSupport {
     public void setDate(String date) { this.date = date; }
     public void setTagType(String tagType) { this.tagType = tagType; }
     public void doTag() {
+        /*
         try {
             PageContext pageContext = (PageContext) getJspContext();
             JspWriter out = pageContext.getOut();
@@ -50,7 +51,10 @@ public class attendanceTag extends SimpleTagSupport {
         } catch (IOException ioe) {
             System.out.println("Error generating prime: " + ioe);
         }
+        */
     }
+
+
     public static boolean isPrime(int n) {  
        if (n <= 1) {  
            return false;  

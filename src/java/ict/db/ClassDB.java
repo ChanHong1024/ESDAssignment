@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ict.db;
+
 import ict.bean.ClassBean;
 import java.io.IOException;
 import java.sql.*;
@@ -14,36 +15,36 @@ import java.util.ArrayList;
  * @author Chan Wai Hong / Chu Shing Fung
  */
 public class ClassDB {
-    private String url="";
-    private String username="";
-    private String password="";
-    
-    public ClassDB(String url,String username,String password){
+
+    private String url = "";
+    private String username = "";
+    private String password = "";
+
+    public ClassDB(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
-    
-    public Connection getConnection() throws SQLException, IOException{
-        try{
+
+    public Connection getConnection() throws SQLException, IOException {
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+        }
+        return DriverManager.getConnection(url, username, password);
     }
-        return DriverManager.getConnection(url,username,password);
-    }
- 
-    
-    public ArrayList<ClassBean> queryClass(){
+
+    public ArrayList<ClassBean> queryClass() {
         Connection cnnct;
         PreparedStatement pStmnt;
         ArrayList<ClassBean> acb = new <ClassBean> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement =  "SELECT class.cid,className,count(account.cid) AS \"population\"\n" +
-                                        "FROM class\n" +
-                                        "LEFT JOIN account ON class.cid = account.cid\n" +
-                                        "GROUP BY class.cid;";
+            String preQueryStatement = "SELECT class.cid,className,count(account.cid) AS \"population\"\n"
+                    + "FROM class\n"
+                    + "LEFT JOIN account ON class.cid = account.cid\n"
+                    + "GROUP BY class.cid;";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             ResultSet rs;
             rs = pStmnt.executeQuery();
@@ -61,15 +62,15 @@ public class ClassDB {
         }
         return acb;
     }
-    
-    public ClassBean queryClassByCid(String cid){
+
+    public ClassBean queryClassByCid(String cid) {
         Connection cnnct;
-        PreparedStatement pStmnt; 
+        PreparedStatement pStmnt;
         ClassBean ab = new ClassBean();
         try {
             cnnct = getConnection();
             //get Connection 
-            String preQueryStatement = "SELECT * FROM class WHERE cid=?"; 
+            String preQueryStatement = "SELECT * FROM class WHERE cid=?";
             //get the prepare Statement 
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             //update the placehoder with id 
@@ -80,44 +81,44 @@ public class ClassDB {
             if (rs.next()) {
                 ab.setCid(rs.getString(1));
                 ab.setClassName(rs.getString(2));
-            } 
+            }
             // set the record detail to the customer bean 
-            pStmnt.close(); 
-            cnnct.close(); 
-        } catch (SQLException ex){
-            while (ex != null) { 
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
-                }
-        }catch(IOException ex){
+            }
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return ab; 
+        return ab;
     }
-    
-    public boolean addClass(String cid,String className){
+
+    public boolean addClass(String cid, String className) {
         Connection cnnct;
         PreparedStatement pStmnt;
         boolean isSuccess = false;
-        try{
+        try {
             cnnct = getConnection();
             String preQueryStatement = "INSERT INTO class VALUES(?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1,cid);
-            pStmnt.setString(2,className);
+            pStmnt.setString(1, cid);
+            pStmnt.setString(2, className);
             int rowCount = pStmnt.executeUpdate();
-            if(rowCount > 1){
+            if (rowCount > 1) {
                 isSuccess = true;
             }
             pStmnt.close();
             cnnct.close();
-        }catch(SQLException | IOException ex){
-           ex.printStackTrace();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
         }
         return isSuccess;
     }
-    
-        public boolean editClass(ClassBean cb) {
+
+    public boolean editClass(ClassBean cb) {
         Connection cnnct;
         PreparedStatement pStmnt;
         boolean isSuccess = false;
@@ -140,5 +141,5 @@ public class ClassDB {
         }
         return isSuccess;
     }
-    
+
 }

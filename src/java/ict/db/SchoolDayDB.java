@@ -53,4 +53,51 @@ public class SchoolDayDB {
         }
         return sdba;  
     } 
+    
+    public boolean addSD(String cid, Date date) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "INSERT INTO schoolday VALUES(?,?)";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setDate(1, date);
+            pStmnt.setString(2, cid);
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount > 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+    
+    public boolean editSD(SchoolDayBean sdb) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE schoolday SET cid = ?, date = ? WHERE cid = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, sdb.getCid());
+            pStmnt.setDate(2, sdb.getDate());
+            pStmnt.setString(3, sdb.getCid());
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }   
+    
 }

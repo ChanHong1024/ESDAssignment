@@ -5,18 +5,20 @@
  */
 package ict.bean;
 
+import java.sql.Date;
+
 /**
  *
  * @author chush
  */
 public class SchoolDayBean {
     private String cid;
-    private String date;
+    private Date date;
     
     public SchoolDayBean(){
     }
     
-    public SchoolDayBean(String cid, String date){
+    public SchoolDayBean(String cid, Date date){
         this.cid = cid;
         this.date = date;
     }
@@ -29,11 +31,11 @@ public class SchoolDayBean {
         this.cid = cid;
     }
     
-    public String getDate(){
+    public Date getDate(){
         return date; 
     }
     
-    public void setDate(String date){
+    public void setDate(Date date){
         this.date = date;
     }
 

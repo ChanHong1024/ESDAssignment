@@ -23,90 +23,11 @@
         <link href="css/style.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-        <!-- Custom scripts for all pages-->
-        <script src="js/script.js"></script> 
-        <!-- Custom scripts/css for calendar-->
+        <!-- Custom css for calendar-->
         <link href='vendor/core/main.css' rel='stylesheet' />
         <link href='vendor/daygrid/main.css' rel='stylesheet' />
         <link href='vendor/timegrid/main.css' rel='stylesheet' />
         <link href='vendor/list/main.css' rel='stylesheet' />
-        <script src='vendor/core/main.js'></script>
-        <script src='vendor/interaction/main.js'></script>
-        <script src='vendor/daygrid/main.js'></script>
-        <script src='vendor/timegrid/main.js'></script>
-        <script src='vendor/list/main.js'></script>
-        <script>
-            function addSelect(value){
-                $("#classSelect").append(new Option(value, value, false));
-            }
-            
-            document.addEventListener('DOMContentLoaded', function () {
-                $.get("http://localhost:8080/ESDAssignment/handleClass?action=printAllClass",function(data,status){
-                    var strArray = data.split(",");
-                    strArray.forEach(addSelect);
-                });
-                $("#classSelect").change(function(){
-                var calendarEl = document.getElementById('calendar');
-
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                    },
-                    defaultDate: '2019-11-29',
-                    editable: true,
-                    navLinks: true, // can click day/week names to navigate views
-                    eventLimit: true, // allow "more" link when too many events
-                    events: {
-                        url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid='+$("#classSelect").val(),
-                        failure: function () {
-
-                        }
-                    },
-                    loading: function (bool) {
-                        document.getElementById('loading').style.display =
-                                bool ? 'block' : 'none';
-                    }
-                });
-                calendarEl.innerHTML = "";
-                calendar.render();
-                });
-                var calendarEl = document.getElementById('calendar');
-
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                    },
-                    defaultDate: '2019-11-29',
-                    editable: true,
-                    navLinks: true, // can click day/week names to navigate views
-                    eventLimit: true, // allow "more" link when too many events
-                    events: {
-                        url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=IT114105',
-                        failure: function () {
-
-                        }
-                    },
-                    loading: function (bool) {
-                        document.getElementById('loading').style.display =
-                                bool ? 'block' : 'none';
-                    }
-                });
-
-                calendar.render();
-            });
-
-        </script>
     </head>
     <body id="page-top">
 
@@ -411,14 +332,15 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Time Table</h1>
                             <div>
-                            <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
-                            <select id="classSelect" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            </select>
+                                <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
+
                             </div>
                         </div>
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3">
+                            <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
                                 <h6 class="m-0 font-weight-bold text-primary">Class Time Table</h6>
+                                <select id="classSelect" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                </select>
                             </div>
                             <div class="card-body">
                                 <div id='calendar'></div>
@@ -472,3 +394,66 @@
         </div>      
     </body>
 </html>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/script.js"></script> 
+<!-- Custom scripts for calendar-->
+<link href='vendor/core/main.css' rel='stylesheet' />
+<link href='vendor/daygrid/main.css' rel='stylesheet' />
+<link href='vendor/timegrid/main.css' rel='stylesheet' />
+<link href='vendor/list/main.css' rel='stylesheet' />
+<script src='vendor/core/main.js'></script>
+<script src='vendor/interaction/main.js'></script>
+<script src='vendor/daygrid/main.js'></script>
+<script src='vendor/timegrid/main.js'></script>
+<script src='vendor/list/main.js'></script>
+<script>
+    function addSelect(value) {
+        $("#classSelect").append(new Option(value, value, false));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        $.get("http://localhost:8080/ESDAssignment/handleClass?action=printAllClass", function (data, status) {
+            var strArray = data.split(",");
+            strArray.forEach(addSelect);
+            updateCal();
+        });
+        
+        $("#classSelect").change(function () {
+            updateCal();
+        });
+
+        function updateCal() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                defaultDate: '2019-11-29',
+                editable: true,
+                navLinks: true, // can click day/week names to navigate views
+                eventLimit: true, // allow "more" link when too many events
+                events: {
+                    url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=' + $("#classSelect").val(),
+                    failure: function () {
+
+                    }
+                },
+                loading: function (bool) {
+                    document.getElementById('loading').style.display =
+                            bool ? 'block' : 'none';
+                }
+            });
+            calendarEl.innerHTML = "";
+            calendar.render();
+        }
+    });
+
+</script>
