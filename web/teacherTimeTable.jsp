@@ -13,6 +13,7 @@
     }
     String fname = (String) session.getAttribute("firstname");
     String lname = (String) session.getAttribute("lastname");
+    String cid = (String) session.getAttribute("cid");
 %>
 <html>
     <head>
@@ -38,7 +39,7 @@
             <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminIndex.jsp">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -50,7 +51,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="teacherIndex.html">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
@@ -60,70 +61,45 @@
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Database
+                    My Class
                 </div>
-
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-user-alt"></i>
-                        <span>Account</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Account Control:</h6>
-                            <a class="collapse-item" href="editAccount.jsp">Create Account</a>
-                            <a class="collapse-item" href="handleAccount?action=showAll">List Account</a>
-                        </div>
-                    </div>
-                </li>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ClassCollapse" aria-expanded="true" aria-controls="ClassCollapse">
                         <i class="fas fa-users"></i>
-                        <span>Class</span>
+                        <span><%=cid%></span>
                     </a>
                     <div id="ClassCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Class Control:</h6>
-                            <a class="collapse-item" href="editClass.jsp">Create Class</a>
-                            <a class="collapse-item" href="handleClass?action=showAll">List Class</a>
+                            <a class="collapse-item" href="teacherStudentList.jsp">Student List</a>
+                            <a class="collapse-item" href="teacherTimeTable.jsp">School Day</a>
                         </div>
                     </div>
                 </li>  
-
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Student Affairs 
+                    Functions
                 </div>
-
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SchoolDayCollapse" aria-expanded="true" aria-controls="SchoolDayCollapse">
-                        <i class="fas fa-users"></i>
-                        <span>School Day</span>
-                    </a>
-                    <div id="SchoolDayCollapse" class="collapse" aria-labelledby="SchoolDayCollapse" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Class Control:</h6>
-                            <a class="collapse-item" href="editSD.jsp">Schedule School Day</a>
-                            <a class="collapse-item" href="timeTable.jsp">Timetable for each class</a>
-                        </div>
-                    </div>
-                </li> 
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="teacherReport.jsp">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Charts</span></a>
+                        <span>Attendance Report</span></a>
                 </li>
 
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="teacherAttendance.jsp">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Take Attendance</span></a>
+                </li>
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -414,21 +390,18 @@
 <script>
     function addSelect(value) {
         $("#classSelect").append(new Option(value, value, false));
-    } 
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
-        $.get("http://localhost:8080/ESDAssignment/handleClass?action=getClassByCid", function (data, status) {
-            var strArray = data.split(",");
-            strArray.forEach(addSelect);
-            updateCal();
-        });
-        
+        addSelect();
+        updateCal();
+
         $("#classSelect").change(function () {
             updateCal();
         });
 
 
-            
+
         function updateCal() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -453,7 +426,7 @@
                             bool ? 'block' : 'none';
                 }
             });
-            
+
             calendarEl.innerHTML = "";
             calendar.render();
         }

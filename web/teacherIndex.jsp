@@ -44,7 +44,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="teacherIndex.html">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -66,8 +66,8 @@
         <div id="ClassCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Class Control:</h6>
-            <a class="collapse-item" href="editClass.jsp">Student List</a>
-            <a class="collapse-item" href="handleClass?action=showAll">School Day</a>
+            <a class="collapse-item" href="teacherStudentList.jsp">Student List</a>
+            <a class="collapse-item" href="teacherTimeTable.jsp">School Day</a>
           </div>
         </div>
       </li>  
@@ -82,14 +82,14 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="teacherReport.jsp">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Attendance Report</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="teacherAttendance.jsp">
           <i class="fas fa-fw fa-table"></i>
           <span>Take Attendance</span></a>
       </li>
