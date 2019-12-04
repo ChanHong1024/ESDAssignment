@@ -70,7 +70,7 @@ public class HandleClass extends HttpServlet {
             String cid = request.getParameter("cid");
             ClassBean classes = db.queryClassByCid(cid);	 
             request.setAttribute("c", classes);
-        // redirect the result
+        // redirect to the result
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/editClass.jsp");
             rd.forward(request, response);

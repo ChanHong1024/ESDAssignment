@@ -89,8 +89,7 @@
             <a class="collapse-item" href="handleClass?action=showAll">List Class</a>
           </div>
         </div>
-      </li>  
-      
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -335,7 +334,7 @@
                             <div class="card-body">
                                 <form  method="get" action="handleEditClass">
                                     <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
-                                    Class ID  <input class="form-control" name="cid"  type="text" value="<%=cid%>"/> <br>
+                                    Class ID  <input class="form-control" name="cid"  type="text" value="<%=cid%>" <% if(type=="Edit"){out.print("readonly");} %>/> <br>
                                     Class Name <input class="form-control" name="className"  type="text" value="<%=className%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>

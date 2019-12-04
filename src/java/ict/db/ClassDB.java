@@ -96,25 +96,21 @@ public class ClassDB {
         return ab;
     }
 
-    public boolean addClass(String cid, String className) {
+    public boolean addClass(String cid, String className) throws SQLException, IOException {
         Connection cnnct;
         PreparedStatement pStmnt;
         boolean isSuccess = false;
-        try {
-            cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO class VALUES(?,?)";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, cid);
-            pStmnt.setString(2, className);
-            int rowCount = pStmnt.executeUpdate();
-            if (rowCount > 1) {
-                isSuccess = true;
-            }
-            pStmnt.close();
-            cnnct.close();
-        } catch (SQLException | IOException ex) {
-            ex.printStackTrace();
+        cnnct = getConnection();
+        String preQueryStatement = "INSERT INTO class VALUES(?,?)";
+        pStmnt = cnnct.prepareStatement(preQueryStatement);
+        pStmnt.setString(1, cid);
+        pStmnt.setString(2, className);
+        int rowCount = pStmnt.executeUpdate();
+        if (rowCount > 1) {
+            isSuccess = true;
         }
+        pStmnt.close();
+        cnnct.close();
         return isSuccess;
     }
 

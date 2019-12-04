@@ -9,8 +9,9 @@ import ict.bean.ClassBean;
 import ict.db.ClassDB;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,9 +56,14 @@ public class HandleEditClass extends HttpServlet {
         cid = request.getParameter("cid");
         className = request.getParameter("className");
         if ("Create".equalsIgnoreCase(action)) {
-          // call the database operations    
-            db.addClass(cid, className);
-            response.sendRedirect("handleClass?action=showAll");
+            try {
+               db.addClass(cid, className);
+               PrintWriter out = response.getWriter();
+               out.print("True"); 
+            } catch (SQLException ex) {
+               PrintWriter out = response.getWriter();
+               out.print("False"); 
+            }
         }else if("Edit".equalsIgnoreCase(action)){
             ClassBean cb = new ClassBean(cid,className);
             if(db.editClass(cb)){

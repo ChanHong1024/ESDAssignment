@@ -339,7 +339,15 @@
                             <div class="card-body">
                                 <form  method="get" action="handleEditAccount">
                                     <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
-                                    Account ID(10)<small>   *If you change roles or create an account, a new ID is automatically assigned.</small> <input class="form-control" name="aid" id="aid"  type="text" value="<%=aid%>" readonly/> <br>
+                                    Account ID(10)<small>
+                                        <%
+                                            if (type == "Create") {
+                                                out.print("*If you create an account, a new ID is automatically assigned.");
+                                            } else if (type == "Edit") {
+                                                out.print("*If you change the account role, <b>NO</b> new account ID is assigned.");
+                                            }
+                                        %>
+                                    </small> <input class="form-control" name="aid" id="aid"  type="text" value="<%=aid%>" readonly/> <br>
                                     Class ID(10)<small>   *If creating / editing an administrator account, please fill in the blanks in this line.</small> <select id="cid" name="cid" class="form-control" required></select><br>
                                     Role <select class="form-control" id="role" name="role" required>
                                         <option value="student" <%if (role.equalsIgnoreCase("student")) {
@@ -354,7 +362,7 @@
                                     </select><br>
                                     First Name(255) <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
                                     Last Name(255) <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
-                                    Password(255) <input class="form-control" name="password"  type="text" value="<%=password%>" required/> <br>
+                                    Password(255) <input class="form-control" name="password"  type="password" value="<%=password%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>
                             </div>
@@ -431,7 +439,7 @@
         $("#role").change(function () {
             $.get("handleAccount?action=getNewID&role=" + $("#role").val(), function (data, status) {
                 $("#aid").val(data);
-                if ("<%=type%>" === "Edit" && $("#role").val() === "<%=role%>") {
+                if ("<%=type%>" === "Edit") {
                     $("#aid").val("<%=aid%>");
                     $("#aid").css("background-image", "linear-gradient(265deg,#ffffff 10%,#ffbc25 100%)");
                 }
