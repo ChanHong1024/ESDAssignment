@@ -98,7 +98,7 @@ String lastname = (String)session.getAttribute("lastname");
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SchoolDayCollapse" aria-expanded="true" aria-controls="SchoolDayCollapse">
-          <i class="fas fa-users"></i>
+          <i class="fas fa-fw fa-calendar-alt"></i>
           <span>School Day</span>
         </a>
         <div id="SchoolDayCollapse" class="collapse" aria-labelledby="SchoolDayCollapse" data-parent="#accordionSidebar">
