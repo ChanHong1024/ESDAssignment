@@ -337,9 +337,15 @@
                                 <form  method="get" action="handleSD">
                                     <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
                                     Class <select name="cid"  id="classSelect" class="form-control">
-                                </select><br>
-                                Date <input class="form-control" name="date" id="date"  type="text" value="<%=className%>" readonly="" required/> <br>
-                                    <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
+                                    </select><br>
+                                    Date <input class="form-control" name="date" id="date"  type="text" value="<%=className%>" readonly="" required/> <br>
+                                    <input class="btn btn-primary" type="submit" value="Submit"/>
+                                    <%
+                                        if(type=="Edit"){
+                                            out.print("<button class='btn btn-danger'>Delete</button>");
+                                        }
+                                    %>
+                                    <br>
                                 </form>
                             </div>
                         </div>

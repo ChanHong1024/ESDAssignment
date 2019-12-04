@@ -427,6 +427,8 @@
             updateCal();
         });
 
+
+            
         function updateCal() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -437,7 +439,7 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 defaultDate: '2019-11-29',
-                editable: true,
+                editable: false,
                 navLinks: true, // can click day/week names to navigate views
                 eventLimit: true, // allow "more" link when too many events
                 events: {
@@ -451,6 +453,7 @@
                             bool ? 'block' : 'none';
                 }
             });
+            
             calendarEl.innerHTML = "";
             calendar.render();
         }
