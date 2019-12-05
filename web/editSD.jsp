@@ -25,6 +25,7 @@
         <!-- Custom styles for this template-->
         <link href="css/style.css" rel="stylesheet">
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>

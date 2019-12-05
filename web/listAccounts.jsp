@@ -24,6 +24,7 @@
         <link href="css/style.css" rel="stylesheet">
         <!-- Custom styles for this page -->
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -332,7 +333,7 @@
                             <h1 class="h3 mb-0 text-gray-800">Account Panel</h1>
                             <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Create Account</a>
                         </div>
-                        <!-- DataTales Example -->
+                        <!-- DataTales -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Account</h6>
@@ -363,8 +364,8 @@
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                            <jsp:useBean id="accounts" class="ArrayList<AccountBean>" scope="request" />
                                             <%
-                                                ArrayList<AccountBean> accounts = (ArrayList<AccountBean>) request.getAttribute("accounts");
                                                 for (int i = 0; i < accounts.size(); i++) {
                                                     AccountBean a = accounts.get(i);
                                                     out.println("<tr>");

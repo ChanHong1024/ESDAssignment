@@ -55,7 +55,6 @@ response.setContentType("text/html;charset=UTF-8");
         if ("Schedule".equalsIgnoreCase(action)) {
     try {
         String cid = request.getParameter("cid");
-       
         String startDate = request.getParameter("date");
         SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
         java.util.Date date = sdf1.parse(startDate);

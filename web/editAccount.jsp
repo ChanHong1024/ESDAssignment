@@ -29,6 +29,7 @@
         <!-- Custom styles for this template-->
         <link href="css/style.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <title>JSP Page</title>
     </head>
     <body id="page-top">

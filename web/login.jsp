@@ -35,7 +35,7 @@
 
         <!-- Custom styles for this template-->
         <link href="css/style.css" rel="stylesheet">
-
+        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

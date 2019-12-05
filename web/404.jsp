@@ -29,7 +29,7 @@ String lastname = (String)session.getAttribute("lastname");
 
   <!-- Custom styles for this template-->
   <link href="css/style.css" rel="stylesheet">
-
+  <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
 </head>
 
 <body id="page-top">
