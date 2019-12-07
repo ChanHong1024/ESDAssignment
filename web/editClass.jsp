@@ -29,7 +29,7 @@
         <title>JSP Page</title>
     </head>
     <body id="page-top">
-    <div id="snackbar" class=""></div>
+        <div id="snackbar" class=""></div>
         <!-- Page Wrapper -->
         <div id="wrapper">
 
@@ -334,7 +334,7 @@
                             </div>
                             <div class="card-body">
                                 <input class="form-control" type="hidden" name="action"  value="<%=type%>" required/>
-                                Class ID  <input class="form-control" name="cid" id="cid"  type="text" value="<%=cid%>" <% if (type == "Edit") {
+                                Class ID  <small>*The Class ID must be combined with 2/3 letter first and 6 digits.</small><input class="form-control" name="cid" id="cid"  type="text" value="<%=cid%>" <% if (type == "Edit") {
                                         out.print("readonly");
                                     }%>/> <br>
                                 Class Name <input class="form-control" name="className" id="className"  type="text" value="<%=className%>" required/> <br>
@@ -409,12 +409,15 @@
             }
 
             $("#submit").click(function () {
-                if ($("#cid").val() == "" || $("#className").val() == "") {
-                    $("#snackbar").css("background-color","rgb(206, 83, 123)");
+                if ($("#cid").val() === "" || $("#className").val() === "") {
+                    $("#snackbar").css("background-color", "rgb(206, 83, 123)");
                     $("#snackbar").html("Both line should be filled");
-                    popUpMsg();    
+                    popUpMsg();
+                } else if (!$("#cid").val().match("^[A-Z]{2,3}[0-9]{6}$")) {
+                    $("#snackbar").css("background-color", "rgb(206, 83, 123)");
+                    $("#snackbar").html("Class ID format wrong!!");
+                    popUpMsg();
                 } else {
-                    alert($("#cid").val());
                     $.post("handleEditClass",
                             {
                                 action: "<%=type%>",
@@ -423,12 +426,15 @@
                             },
                             function (data, status) {
                                 if (data === "True") {
-                                    $("#snackbar").css("background-color","#72b577");
-                                    $("#snackbar").html("Create Success");
+                                    $("#snackbar").css("background-color", "#72b577");
+                                    $("#snackbar").html("Create Success, Redirecting to Class List....");
                                     popUpMsg();
+                                    setTimeout(function () {
+                                        window.location.href = "handleClass?action=showAll";
+                                    }, 2000); 
                                 } else if (data === "False") {
-                                    $("#snackbar").css("background-color","#72b577");
-                                    $("#snackbar").html("Create Failed");
+                                    $("#snackbar").css("background-color", "rgb(206, 83, 123)");
+                                    $("#snackbar").html("Please do not enter an existing class ID!");
                                     popUpMsg();
                                 }
                             });

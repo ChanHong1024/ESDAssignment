@@ -406,7 +406,7 @@
         <script src="js/script.min.js"></script>    
         <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <script>
-            $('#date').datepicker();
+            $('#date').datepicker({ format: 'yyyy-mm-dd' });
 
             document.addEventListener('DOMContentLoaded', function () {
                 function addSelect(value) {

@@ -5,6 +5,7 @@
  */
 package ict.servlet;
 
+import ict.bean.SchoolDayBean;
 import ict.db.SchoolDayDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,43 +38,55 @@ public class HandleSD extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private SchoolDayDB db;
-    
+
     @Override
     public void init() {
         //1.  obtain the context-param, dbUser, dbPassword and dbUrl which defined in web.xml
-        String dbUser,dbPassword,dbUrl;
+        String dbUser, dbPassword, dbUrl;
         dbUser = getServletContext().getInitParameter("dbUser");
         dbPassword = getServletContext().getInitParameter("dbPassword");
-        dbUrl = getServletContext().getInitParameter("dbUrl"); 
+        dbUrl = getServletContext().getInitParameter("dbUrl");
         //2.  create a new db object  with the parameter
-        db = new SchoolDayDB(dbUrl,dbUser,dbPassword);
-    }  
+        db = new SchoolDayDB(dbUrl, dbUser, dbPassword);
+    }
+
+    
+    public Date conDate(String dateStr){
+        java.sql.Date sqlDate = new Date(0);
+        try {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = sdf1.parse(dateStr); 
+            sqlDate = new java.sql.Date(date.getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(HandleSD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sqlDate;
+    }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if ("Schedule".equalsIgnoreCase(action)) {
-    try {
-        String cid = request.getParameter("cid");
-        String startDate = request.getParameter("date");
-        SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
-        java.util.Date date = sdf1.parse(startDate);
-        sdf1.applyPattern("yyyy/MM/dd");
-        startDate = sdf1.format(date);
-        date = sdf1.parse(startDate);
-        java.sql.Date sqlStartDate = new java.sql.Date(date.getTime()); 
-        
-        
-        // call the database operations
-        db.addSD(cid, sqlStartDate);
-        PrintWriter out = response.getWriter();
-        out.println("dgdfgdf"+sqlStartDate);
-        response.sendRedirect("timeTable.jsp");
-    } catch (ParseException ex) {
-        Logger.getLogger(HandleSD.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        }else {
+            String cid = request.getParameter("cid");
+            Date date = conDate(request.getParameter("date"));
+            // call the database operations
+            db.addSD(cid, date);
+            PrintWriter out = response.getWriter();
+            out.println("dgdfgdf" + date);
+            response.sendRedirect("timeTable.jsp");
+        } else if ("Delete".equalsIgnoreCase(action)) {
+            String cid = request.getParameter("cid");
+            Date date = conDate(request.getParameter("date"));
+            SchoolDayBean sb = new SchoolDayBean(cid,date);
+            if(db.deleteSD(sb)){
+                PrintWriter out = response.getWriter();
+                out.print("Success");
+            }else{
+                PrintWriter out = response.getWriter();
+                out.print("Fail");
+            }
+        } else {
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
         }

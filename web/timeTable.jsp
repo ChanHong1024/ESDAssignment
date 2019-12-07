@@ -392,7 +392,34 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
+
+        <!-- Delete Date Modal-->
+        <div class="modal fade" id="deleteDateModal" tabindex="-1" role="dialog" aria-labelledby="deleteDateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteDateModalLabel">Ready to Revoke Schedule?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="delCid">Class </label>
+                        <input class="form-control" id="delCid" type="text" readonly/>
+                        <hr>
+                        <label for="delCid">Date </label>
+                        <input class="form-control" id="delDate" type="text" readonly/>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger" href="javascript:delSchedule()">Revoke Schedule</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </body>
 </html>
 <!-- Bootstrap core JavaScript-->
@@ -412,52 +439,79 @@
 <script src='vendor/daygrid/main.js'></script>
 <script src='vendor/timegrid/main.js'></script>
 <script src='vendor/list/main.js'></script>
+<script src='vendor/moment/main.js'></script>
 <script>
+    var calendar;
     function addSelect(value) {
         $("#classSelect").append(new Option(value, value, false));
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        $.get("http://localhost:8080/ESDAssignment/handleClass?action=printAllClass", function (data, status) {
+    function delModal(cid, date) {
+        $("#delCid").val(cid);
+        $("#delDate").val(date);
+        $("#deleteDateModal").modal();
+    }
+
+    function delSchedule() {
+        var cid = $("#delCid").val();
+        var date = $("#delDate").val();
+        $.post("handleSD",
+                {
+                    action: "Delete",
+                    cid: cid,
+                    date: date
+                },
+                function (data, status) {
+                    if (data === "Success") {
+                        calendar.refetchEvents();
+                        $("#deleteDateModal").modal('toggle');
+                    }
+                });
+    }
+
+    function updateCal() {
+        var calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultDate: moment().format("YYYY-MM-DD"),
+            editable: false,
+            navLinks: true, // can click day/week names to navigate views
+            eventLimit: true, // allow "more" link when too many events
+            events: {
+                url: 'handleTimeTable?cid=' + $("#classSelect").val(),
+                failure: function () {
+
+                }
+            },
+            loading: function (bool) {
+                document.getElementById('loading').style.display =
+                        bool ? 'block' : 'none';
+            }
+        });
+
+        calendarEl.innerHTML = "";
+        calendar.render();
+    }
+
+    function fetchClass() {
+        $.get("handleClass?action=printAllClass", function (data, status) {
             var strArray = data.split(",");
             strArray.forEach(addSelect);
             updateCal();
         });
+    }
+
+    $(document).ready(function () {
+        fetchClass();
 
         $("#classSelect").change(function () {
             updateCal();
         });
-
-
-
-        function updateCal() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                },
-                defaultDate: '2019-11-29',
-                editable: false,
-                navLinks: true, // can click day/week names to navigate views
-                eventLimit: true, // allow "more" link when too many events
-                events: {
-                    url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=' + $("#classSelect").val(),
-                    failure: function () {
-
-                    }
-                },
-                loading: function (bool) {
-                    document.getElementById('loading').style.display =
-                            bool ? 'block' : 'none';
-                }
-            });
-
-            calendarEl.innerHTML = "";
-            calendar.render();
-        }
     });
 
 </script>

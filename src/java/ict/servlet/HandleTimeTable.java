@@ -56,8 +56,9 @@ public class HandleTimeTable extends HttpServlet {
         JSONArray jsonArray = new JSONArray();
         for(int i=0;i<dates.size();i++){
             Map map = new HashMap();
-            map.put("title", "School Day");
+            map.put("title", "School Day (Click to revoke)");
             map.put("start", dates.get(i));
+            map.put("url", "javascript:delModal('"+cid+"','"+dates.get(i)+"');");
             jsonArray.put(new JSONObject(map));
         }
         out.print(jsonArray.toString());

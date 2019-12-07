@@ -98,6 +98,30 @@ public class SchoolDayDB {
             ex.printStackTrace();
         }
         return isSuccess;
-    }   
+    } 
+    
+    
+    public boolean deleteSD(SchoolDayBean sdb) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "DELETE FROM schoolday WHERE cid = ? AND date = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, sdb.getCid());
+            pStmnt.setDate(2, sdb.getDate());
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    } 
     
 }
