@@ -333,7 +333,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Time Table</h1>
                             <div>
-                                <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
+                                <a href="editSD.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
 
                             </div>
                         </div>
@@ -442,6 +442,7 @@
 <script src='vendor/moment/main.js'></script>
 <script>
     var calendar;
+
     function addSelect(value) {
         $("#classSelect").append(new Option(value, value, false));
     }
@@ -453,6 +454,7 @@
     }
 
     function delSchedule() {
+
         var cid = $("#delCid").val();
         var date = $("#delDate").val();
         $.post("handleSD",
@@ -462,6 +464,7 @@
                     date: date
                 },
                 function (data, status) {
+                    //alert(cid +date+ data)
                     if (data === "Success") {
                         calendar.refetchEvents();
                         $("#deleteDateModal").modal('toggle');
@@ -485,7 +488,6 @@
             events: {
                 url: 'handleTimeTable?cid=' + $("#classSelect").val(),
                 failure: function () {
-
                 }
             },
             loading: function (bool) {
@@ -493,21 +495,16 @@
                         bool ? 'block' : 'none';
             }
         });
-
         calendarEl.innerHTML = "";
         calendar.render();
     }
 
-    function fetchClass() {
+    $(document).ready(function () {
         $.get("handleClass?action=printAllClass", function (data, status) {
             var strArray = data.split(",");
             strArray.forEach(addSelect);
             updateCal();
         });
-    }
-
-    $(document).ready(function () {
-        fetchClass();
 
         $("#classSelect").change(function () {
             updateCal();
