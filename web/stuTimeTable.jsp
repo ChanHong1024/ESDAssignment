@@ -36,46 +36,46 @@
         <!-- Page Wrapper -->
         <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
-      </a>
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
+                </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span></a>
+                </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
-        <li class="nav-item">
-            <a class="nav-link" href="handleAttendance?action=showMyAtt">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Attendance Records</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="StuTimeTable.jsp">
-                <i class="far fa-fw fa-calendar-alt"></i>
-                <span>List My School Days</span></a>
-        </li>
-    </ul>
-    <!-- End of Sidebar -->
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Interface
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="handleAttendance?action=showMyAtt">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Attendance Records</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="stuTimeTable.jsp">
+                        <i class="far fa-fw fa-calendar-alt"></i>
+                        <span>List My School Days</span></a>
+                </li>
+            </ul>
+            <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">

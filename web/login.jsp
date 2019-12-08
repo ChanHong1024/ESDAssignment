@@ -10,7 +10,7 @@
     if (session.getAttribute("role") != null) {
         role = (String) session.getAttribute("role");
         if (role.equalsIgnoreCase("student")) {
-            response.sendRedirect("handleAttendance?action=showMyAtt");
+            response.sendRedirect("stuIndex.jsp");
         } else if (role.equalsIgnoreCase("admin")) {
             response.sendRedirect("adminIndex.jsp");
         } else if (role.equalsIgnoreCase("teacher")) {

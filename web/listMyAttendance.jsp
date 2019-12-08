@@ -68,7 +68,7 @@
                 <span>Attendance Records</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="StuTimeTable.jsp">
+            <a class="nav-link" href="stuTimeTable.jsp">
                 <i class="far fa-fw fa-calendar-alt"></i>
                 <span>List My School Days</span></a>
         </li>
