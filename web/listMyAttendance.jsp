@@ -27,7 +27,7 @@
         <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Attendence2 - Att. Records</title>
     </head>
     <body id="page-top">
 
@@ -38,7 +38,7 @@
     <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-check-circle"></i>
         </div>
@@ -62,39 +62,16 @@
       <div class="sidebar-heading">
         Interface
       </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Account</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Account Control:</h6>
-            <a class="collapse-item" href="editAccount.jsp">Add an account</a>
-            <a class="collapse-item" href="handleAccount?action=ShowAllAccounts">List Account</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-calendar-check"></i>
-          <span>Attendance</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="handleAttendance?action=showMyAtt">Attendance Records</a>
-            <a class="collapse-item" href="utilities-color.html">School Days</a>
-          </div>
-        </div>
-      </li>
-
-
-
+        <li class="nav-item">
+            <a class="nav-link" href="handleAttendance?action=showMyAtt">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Attendance Records</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="StuTimeTable.jsp">
+                <i class="far fa-fw fa-calendar-alt"></i>
+                <span>List My School Days</span></a>
+        </li>
     </ul>
     <!-- End of Sidebar -->
 
@@ -291,8 +268,7 @@
             <div class="container-fluid">
 
               <!-- Page Heading -->
-              <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-              <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+              <h1 class="h3 mb-2 text-gray-800">Attendance Records</h1>
 
               <!-- DataTales Example -->
               <div class="card shadow mb-4">

@@ -48,9 +48,8 @@ public class AttendanceDB {
             while (rs.next()) {
                 AttendanceBean ab = new AttendanceBean();
                 ab.setDate(rs.getString(1));
-                ab.setCid(rs.getString(2));
-                ab.setAid(rs.getString(3));
-                ab.setStatus(rs.getBoolean(4));
+                ab.setAid(rs.getString(2));
+                ab.setStatus(rs.getBoolean(3));
                 aab.add(ab);
             }
             pStmnt.close();
@@ -61,30 +60,27 @@ public class AttendanceDB {
         return aab;  
     }
     
-    public boolean addAccount(String aid,String cid,String role,String firstname,String lastname,String password){
-        Connection cnnct = null;
-        PreparedStatement pStmnt = null;
+    public boolean addAccount(String aid,String role,String firstname,String lastname,String password){
+        Connection cnnct;
+        PreparedStatement pStmnt;
         boolean isSuccess = false;
         try{
             cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO account VALUES(?,?,?,?,?,?)";
+            String preQueryStatement = "INSERT INTO account VALUES(?,?,?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1,aid);
-            pStmnt.setString(2,cid);
-            pStmnt.setString(3,role);
-            pStmnt.setString(4,firstname);
-            pStmnt.setString(5,lastname);
-            pStmnt.setString(6,password);
+            pStmnt.setString(2,role);
+            pStmnt.setString(3,firstname);
+            pStmnt.setString(4,lastname);
+            pStmnt.setString(5,password);
             int rowCount = pStmnt.executeUpdate();
             if(rowCount > 1){
                 isSuccess = true;
             }
             pStmnt.close();
             cnnct.close();
-        }catch(SQLException ex){
+        }catch(SQLException | IOException ex){
            ex.printStackTrace();
-        }catch(IOException ex){
-            ex.printStackTrace();
         }
         return isSuccess;
     }
@@ -102,18 +98,15 @@ public class AttendanceDB {
             while (rs.next()) {
                 AccountBean ab = new AccountBean();
                 ab.setAid(rs.getString(1));
-                ab.setCid(rs.getString(2));
-                ab.setRole(rs.getString(3));
-                ab.setFirstName(rs.getString(4));
-                ab.setLastName(rs.getString(5));
-                ab.setPassword(rs.getString(6));
+                ab.setRole(rs.getString(2));
+                ab.setFirstName(rs.getString(3));
+                ab.setLastName(rs.getString(4));
+                ab.setPassword(rs.getString(5));
                 aab.add(ab);
             }
             pStmnt.close();
             cnnct.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+        } catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }
         return aab;
@@ -136,11 +129,10 @@ public class AttendanceDB {
             //execute the query and assign to the result 
             if (rs.next()) {
                 ab.setAid(rs.getString(1));
-                ab.setCid(rs.getString(2));
-                ab.setRole(rs.getString(3));
-                ab.setFirstName(rs.getString(4));
-                ab.setLastName(rs.getString(5));
-                ab.setPassword(rs.getString(6));
+                ab.setRole(rs.getString(2));
+                ab.setFirstName(rs.getString(3));
+                ab.setLastName(rs.getString(4));
+                ab.setPassword(rs.getString(5));
             } 
             // set the record detail to the customer bean 
             pStmnt.close(); 
@@ -154,43 +146,5 @@ public class AttendanceDB {
             ex.printStackTrace();
         }
         return ab; 
-    }
-        
-        public AccountBean verifyAcc(String aid,String password){
-        Connection cnnct;
-        PreparedStatement pStmnt; 
-        AccountBean ab = new AccountBean();
-        boolean isSuccess = false;
-        try {
-            cnnct = getConnection();
-            //get Connection 
-            String preQueryStatement = "SELECT * FROM account WHERE aid=? AND password=?"; 
-            //get the prepare Statement 
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            //update the placehoder with id 
-            pStmnt.setString(1, aid);
-            pStmnt.setString(2, password);
-            ResultSet rs;
-            rs = pStmnt.executeQuery();
-            if (rs.next()) {
-                ab.setAid(rs.getString(1));
-                ab.setCid(rs.getString(2));
-                ab.setRole(rs.getString(3));
-                ab.setFirstName(rs.getString(4));
-                ab.setLastName(rs.getString(5));
-                ab.setPassword(rs.getString(6));
-            } 
-            pStmnt.close(); 
-            cnnct.close(); 
-        } catch (SQLException ex){
-            while (ex != null) { 
-                ex.printStackTrace();
-                ex = ex.getNextException();
-                }
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-        return ab; 
-    }    
-    
+    }      
 }

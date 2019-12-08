@@ -11,16 +11,14 @@ package ict.bean;
  */
 public class AttendanceBean {
     private String date;
-    private String cid;
     private String aid;
     private boolean status;
     
     public AttendanceBean(){
     }
      
-    public AttendanceBean(String date,String cid,String aid,boolean status){
+    public AttendanceBean(String date,String aid,boolean status){
         this.aid = aid;
-        this.cid = cid;
         this.date = date;
         this.status = status;
     }
@@ -33,13 +31,6 @@ public class AttendanceBean {
         this.aid = aid;
     }
     
-    public String getCid(){
-        return cid; 
-    }
-    
-    public void setCid(String cid){
-        this.cid = cid;
-    }
     
     public String getDate(){
         return date; 
@@ -59,6 +50,6 @@ public class AttendanceBean {
     
     @Override
     public String toString(){
-        return "Date: " + date + ", Cid: " + cid + ", Aid: " + aid + ", Status: " + status;
+        return "Date: " + date + ", Aid: " + aid + ", Status: " + status;
     }
 }

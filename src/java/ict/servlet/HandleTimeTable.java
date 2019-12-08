@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -51,14 +52,22 @@ public class HandleTimeTable extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        String role = (String)session.getAttribute("role");
         String cid = request.getParameter("cid");
         ArrayList<String> dates = db.querySchoolDayByCid(cid);
         JSONArray jsonArray = new JSONArray();
         for(int i=0;i<dates.size();i++){
             Map map = new HashMap();
-            map.put("title", "School Day (Click to revoke)");
-            map.put("start", dates.get(i));
-            map.put("url", "javascript:delModal('"+cid+"','"+dates.get(i)+"');");
+            if(role.equalsIgnoreCase("student") ||role.equalsIgnoreCase("teacher")){
+                map.put("title", "School Day");
+                map.put("start", dates.get(i));       
+            }else if(role.equalsIgnoreCase("admin")){
+                map.put("title", "School Day (Click to revoke)");
+                map.put("start", dates.get(i));
+                map.put("url", "javascript:delModal('"+cid+"','"+dates.get(i)+"');");      
+            }
+
             jsonArray.put(new JSONObject(map));
         }
         out.print(jsonArray.toString());
