@@ -55,7 +55,7 @@ public class HandleAttendance extends HttpServlet {
             request.setAttribute("att", att);
             //redirect
             RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listMyAttendance.jsp");
+            rd = getServletContext().getRequestDispatcher("/stuAttendance.jsp");
             rd.forward(request, response);
         }else {
             PrintWriter out = response.getWriter();
