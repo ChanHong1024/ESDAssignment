@@ -5,17 +5,14 @@
  */
 package ict.servlet;
 
-import com.mysql.jdbc.exceptions.*;
 import ict.bean.AccountBean;
 import ict.db.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,9 +53,11 @@ public class HandleEditAccount extends HttpServlet {
 
         String action = request.getParameter("action");
         //get the parameter, action, from users
-        String aid,cid,role,firstname,lastname,password;
+        String aid,cid=null,role,firstname,lastname,password;
         aid = request.getParameter("aid");
-        cid = request.getParameter("cid");
+        if(request.getParameter("cid") != null){
+            cid = request.getParameter("cid");
+        }
         role = request.getParameter("role");
         firstname = request.getParameter("firstname");
         lastname = request.getParameter("lastname");
@@ -68,14 +67,8 @@ public class HandleEditAccount extends HttpServlet {
                 // call the database operations
                 db.addAccount(aid, cid, role, firstname, lastname, password);
                 response.sendRedirect("handleAccount?action=showAll");
-            } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException ex) {
-                PrintWriter out = response.getWriter();
-                out.print("Duplicate primary key values");
             } catch (SQLException ex) {
-                Logger.getLogger(HandleEditAccount.class.getName()).log(Level.SEVERE, null, ex);
                 ex.printStackTrace();
-                PrintWriter out = response.getWriter();
-                out.print(Arrays.toString(ex.getStackTrace()));
             }
         }else if("Edit".equalsIgnoreCase(action)){
             try {
