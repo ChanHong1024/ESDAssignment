@@ -6,9 +6,10 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="ict.bean.AccountBean"%>
+<%@page import="ict.bean.AttendanceBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if (session.getAttribute("isLoggedIn") == null) {
+    if(session.getAttribute("isLoggedIn") == null) {
         response.sendRedirect("login.jsp");
     }
     String firstname = (String) session.getAttribute("firstname");
@@ -18,7 +19,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Bootstrap core JavaScript-->
+         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -46,11 +47,20 @@
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
         <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script>
             $(document).ready(function () {
-                $('#datepicker').datepicker();
+                $("#datepicker").datepicker({
+                    format: 'yyyy-mm-dd'
+                });
+                $('#datepicker').change(function(){
+                    window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
+                });
             });
+        </script>
+        <script>
+            function takeAttendance() {
+                alert($(this).);
+            }
         </script>
         <title>JSP Page</title>
     </head>
@@ -348,26 +358,36 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Account ID</th>
-                                                <th>Name</th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
                                             <jsp:useBean id="accounts" class="ArrayList<AccountBean>" scope="request" />
+                                            <jsp:useBean id="attendance" class="ArrayList<AttendanceBean>" scope="request" />
                                             <%
+                                                boolean notAttended = false;
                                                 for (int i = 0; i < accounts.size(); i++) {
                                                     AccountBean a = accounts.get(i);
+                                                    String date = request.getParameter("date");
+                                                    if(!a.getCid().equals(cid) || a.getRole().equals("teacher")){
+                                                        continue;
+                                                    }
                                                     out.println("<tr>");
-                                                    out.println("<td>" + a.getAid() + "</td>");
-                                                    out.println("<td>" + a.getCid() + "</td>");
-                                                    out.println("<td>" + a.getFirstName() + "</td>");
-                                                    out.println("<td>" + a.getLastName() + "</td>");
-                                                    out.println("<td>" + a.getPassword() + "</td>");
-                                                    out.println("<td>" + a.getRole() + "</td>");
-                                                    out.println("<td><a href=\"handleAccount?action=getAccountByAid&aid=" + a.getAid() + "\">edit</a></td>");
+                                                    out.println("<td class='aid'>" + a.getAid() + "</td>");
+                                                    out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
+                                                    out.println("<td>");
+                                                    if(date != null){
+                                                        for(int n = 0; n < attendance.size(); n++){
+                                                            if(attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus().equals){
+                                                                out.println("<a href='javascript: return false;' class='takeAttendance'>Attended</a>");
+                                                                notAttended = false;
+                                                                break;
+                                                            }else{
+                                                                notAttended = true;
+                                                            }
+                                                        }
+                                                        if(notAttended){
+                                                            out.println("<button onclick='takeAttendance()'>Not Attended</button>");
+                                                        }
+                                                    }
+                                                    out.println("</td>");
                                                     out.println("</tr>");
                                                 }
                                             %>
@@ -424,71 +444,3 @@
         </div>
     </body>
 </html>
-<script>
-    var calendar;
-
-    function delModal(cid, date) {
-        $("#delCid").val(cid);
-        $("#delDate").val(date);
-        $("#deleteDateModal").modal();
-    }
-
-    function delSchedule() {
-
-        var cid = $("#delCid").val();
-        var date = $("#delDate").val();
-        $.post("handleSD",
-                {
-                    action: "Delete",
-                    cid: cid,
-                    date: date
-                },
-                function (data, status) {
-                    //alert(cid +date+ data)
-                    if (data === "Success") {
-                        calendar.refetchEvents();
-                        $("#deleteDateModal").modal('toggle');
-                    }
-                });
-    }
-
-    function updateCal() {
-        var calendarEl = document.getElementById('calendar');
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-            },
-            defaultDate: moment().format("YYYY-MM-DD"),
-            editable: false,
-            navLinks: true, // can click day/week names to navigate views
-            eventLimit: true, // allow "more" link when too many events
-            events: {
-                url: 'handleTimeTable?cid=' + $("#classSelect").val(),
-                failure: function () {
-                }
-            },
-            loading: function (bool) {
-                document.getElementById('loading').style.display =
-                        bool ? 'block' : 'none';
-            }
-        });
-        calendarEl.innerHTML = "";
-        calendar.render();
-    }
-
-    $(document).ready(function () {
-        $.get("handleClass?action=printAllClass", function (data, status) {
-            var strArray = data.split(",");
-            strArray.forEach(addSelect);
-            updateCal();
-        });
-
-        $("#classSelect").change(function () {
-            updateCal();
-        });
-    });
-
-</script>

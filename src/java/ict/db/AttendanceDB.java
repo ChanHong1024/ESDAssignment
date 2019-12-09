@@ -5,7 +5,6 @@
  */
 package ict.db;
 
-import ict.bean.AccountBean;
 import ict.bean.AttendanceBean;
 import java.io.IOException;
 import java.sql.*;
@@ -59,49 +58,21 @@ public class AttendanceDB {
         }
         return aab;  
     }
-    
-    public boolean addAccount(String aid,String role,String firstname,String lastname,String password){
+    public ArrayList<AttendanceBean> queryAtt(){
         Connection cnnct;
         PreparedStatement pStmnt;
-        boolean isSuccess = false;
-        try{
-            cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO account VALUES(?,?,?,?,?)";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1,aid);
-            pStmnt.setString(2,role);
-            pStmnt.setString(3,firstname);
-            pStmnt.setString(4,lastname);
-            pStmnt.setString(5,password);
-            int rowCount = pStmnt.executeUpdate();
-            if(rowCount > 1){
-                isSuccess = true;
-            }
-            pStmnt.close();
-            cnnct.close();
-        }catch(SQLException | IOException ex){
-           ex.printStackTrace();
-        }
-        return isSuccess;
-    }
-    
-    public ArrayList<AccountBean> queryAcc() throws IOException {
-        Connection cnnct;
-        PreparedStatement pStmnt;
-        ArrayList<AccountBean> aab = new <AccountBean> ArrayList();
+        ArrayList<AttendanceBean> aab = new <AttendanceBean> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM account";
+            String preQueryStatement = "SELECT * FROM attendance";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             ResultSet rs;
             rs = pStmnt.executeQuery();
             while (rs.next()) {
-                AccountBean ab = new AccountBean();
-                ab.setAid(rs.getString(1));
-                ab.setRole(rs.getString(2));
-                ab.setFirstName(rs.getString(3));
-                ab.setLastName(rs.getString(4));
-                ab.setPassword(rs.getString(5));
+                AttendanceBean ab = new AttendanceBean();
+                ab.setDate(rs.getString(1));
+                ab.setAid(rs.getString(2));
+                ab.setStatus(rs.getBoolean(3));
                 aab.add(ab);
             }
             pStmnt.close();
@@ -109,42 +80,66 @@ public class AttendanceDB {
         } catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }
-        return aab;
+        return aab;  
     }
     
-        public AccountBean queryAccByAid(String aid){
-        Connection cnnct;
-        PreparedStatement pStmnt; 
-        AccountBean ab = new AccountBean();
-        try {
+    public boolean addRecord(String date, String aid, String status){
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try{
             cnnct = getConnection();
-            //get Connection 
-            String preQueryStatement = "SELECT * FROM account WHERE aid=?"; 
-            //get the prepare Statement 
+            String preQueryStatement = "INSERT INTO attendance VALUES (?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            //update the placehoder with id 
-            pStmnt.setString(1, aid);
-            ResultSet rs;
-            rs = pStmnt.executeQuery();
-            //execute the query and assign to the result 
-            if (rs.next()) {
-                ab.setAid(rs.getString(1));
-                ab.setRole(rs.getString(2));
-                ab.setFirstName(rs.getString(3));
-                ab.setLastName(rs.getString(4));
-                ab.setPassword(rs.getString(5));
-            } 
-            // set the record detail to the customer bean 
-            pStmnt.close(); 
-            cnnct.close(); 
-        } catch (SQLException ex){
-            while (ex != null) { 
+            pStmnt.setString(1, date);
+            pStmnt.setString(2, aid);
+            pStmnt.setString(3, status);
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1){
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
-                }
-        }catch(IOException ex){
+            }            
+        } catch (IOException ex){
             ex.printStackTrace();
         }
-        return ab; 
-    }      
+        return isSuccess;
+    }
+        
+    public boolean editRecord(String date, String aid, String status){
+        Connection cnnct = null;
+        PreparedStatement pStmnt = null;
+        boolean isSuccess = false;
+        try{
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE attendance "
+                    + "SET date = ?, aid = ?, status = ? "
+                    + "WHERE aid = ?;";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, date);
+            pStmnt.setString(2, aid);
+            pStmnt.setString(3, status);
+            pStmnt.setString(4, aid);
+            System.out.println(pStmnt);
+            int rowCount = pStmnt.executeUpdate();
+            if(rowCount >= 1){
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }            
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
 }
