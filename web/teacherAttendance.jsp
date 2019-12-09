@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="ict.bean.AccountBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (session.getAttribute("isLoggedIn") == null) {
@@ -342,29 +343,34 @@
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th class=""></th>
+                                                <th>Account ID</th>
+                                                <th>Name</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th></th>
+                                                <th>Account ID</th>
+                                                <th>Name</th>
                                                 <th></th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                            <jsp:useBean id="accounts" class="ArrayList<AccountBean>" scope="request" />
+                                            <%
+                                                for (int i = 0; i < accounts.size(); i++) {
+                                                    AccountBean a = accounts.get(i);
+                                                    out.println("<tr>");
+                                                    out.println("<td>" + a.getAid() + "</td>");
+                                                    out.println("<td>" + a.getCid() + "</td>");
+                                                    out.println("<td>" + a.getFirstName() + "</td>");
+                                                    out.println("<td>" + a.getLastName() + "</td>");
+                                                    out.println("<td>" + a.getPassword() + "</td>");
+                                                    out.println("<td>" + a.getRole() + "</td>");
+                                                    out.println("<td><a href=\"handleAccount?action=getAccountByAid&aid=" + a.getAid() + "\">edit</a></td>");
+                                                    out.println("</tr>");
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -418,3 +424,71 @@
         </div>
     </body>
 </html>
+<script>
+    var calendar;
+
+    function delModal(cid, date) {
+        $("#delCid").val(cid);
+        $("#delDate").val(date);
+        $("#deleteDateModal").modal();
+    }
+
+    function delSchedule() {
+
+        var cid = $("#delCid").val();
+        var date = $("#delDate").val();
+        $.post("handleSD",
+                {
+                    action: "Delete",
+                    cid: cid,
+                    date: date
+                },
+                function (data, status) {
+                    //alert(cid +date+ data)
+                    if (data === "Success") {
+                        calendar.refetchEvents();
+                        $("#deleteDateModal").modal('toggle');
+                    }
+                });
+    }
+
+    function updateCal() {
+        var calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            defaultDate: moment().format("YYYY-MM-DD"),
+            editable: false,
+            navLinks: true, // can click day/week names to navigate views
+            eventLimit: true, // allow "more" link when too many events
+            events: {
+                url: 'handleTimeTable?cid=' + $("#classSelect").val(),
+                failure: function () {
+                }
+            },
+            loading: function (bool) {
+                document.getElementById('loading').style.display =
+                        bool ? 'block' : 'none';
+            }
+        });
+        calendarEl.innerHTML = "";
+        calendar.render();
+    }
+
+    $(document).ready(function () {
+        $.get("handleClass?action=printAllClass", function (data, status) {
+            var strArray = data.split(",");
+            strArray.forEach(addSelect);
+            updateCal();
+        });
+
+        $("#classSelect").change(function () {
+            updateCal();
+        });
+    });
+
+</script>

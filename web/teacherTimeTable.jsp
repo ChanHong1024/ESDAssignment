@@ -308,15 +308,10 @@
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Time Table</h1>
-                            <div>
-                                <a href="editAccount.jsp" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-user-alt"></i> Schedule School Day</a>
-
-                            </div>
                         </div>
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
-                                <h6 class="m-0 font-weight-bold text-primary">Class Time Table</h6>
-                                <select id="classSelect" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <h6 class="m-0 font-weight-bold text-primary"><div id="cid"><%=cid%></div></h6>
                                 </select>
                             </div>
                             <div class="card-body">
@@ -389,19 +384,8 @@
 <script src='vendor/timegrid/main.js'></script>
 <script src='vendor/list/main.js'></script>
 <script>
-    function addSelect(value) {
-        $("#classSelect").append(new Option(value, value, false));
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
-        addSelect();
         updateCal();
-
-        $("#classSelect").change(function () {
-            updateCal();
-        });
-
-
 
         function updateCal() {
             var calendarEl = document.getElementById('calendar');
@@ -417,7 +401,7 @@
                 navLinks: true, // can click day/week names to navigate views
                 eventLimit: true, // allow "more" link when too many events
                 events: {
-                    url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=' + $("#classSelect").val(),
+                    url: 'http://localhost:8080/ESDAssignment/handleTimeTable?cid=' + document.getElementById('cid').textContent,
                     failure: function () {
 
                     }
