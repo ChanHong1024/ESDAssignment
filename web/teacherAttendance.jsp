@@ -55,12 +55,17 @@
                 $('#datepicker').change(function(){
                     window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
                 });
+                $('.btn_hide').click(function(){
+
+                    alert($(this).closest('td').prev('.contact_name').text());
+
+                });
+                $('.btn_attendance').click(function(){
+
+                    alert($(this).closest('td').prev('.aid').text());
+
+                });
             });
-        </script>
-        <script>
-            function takeAttendance() {
-                alert($(this).);
-            }
         </script>
         <title>JSP Page</title>
     </head>
@@ -130,7 +135,7 @@
 
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
-                    <a class="nav-link" href="teacherAttendance.jsp">
+                    <a class="nav-link" href="HandleTakeAttendance?action=showAttendance">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Take Attendance</span></a>
                 </li>
@@ -375,8 +380,8 @@
                                                     out.println("<td>");
                                                     if(date != null){
                                                         for(int n = 0; n < attendance.size(); n++){
-                                                            if(attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus().equals){
-                                                                out.println("<a href='javascript: return false;' class='takeAttendance'>Attended</a>");
+                                                            if(attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus()){
+                                                                out.println("<button class='btn btn_attendance'>Attended</button>");
                                                                 notAttended = false;
                                                                 break;
                                                             }else{
@@ -384,10 +389,11 @@
                                                             }
                                                         }
                                                         if(notAttended){
-                                                            out.println("<button onclick='takeAttendance()'>Not Attended</button>");
+                                                            out.println("<button class='btn btn_attendance'>Not Attended</button>");
                                                         }
                                                     }
                                                     out.println("</td>");
+                                                    out.println("<td class='contact_name' style='padding: 7px 0;'>Name 1</td><td><button class='btn_hide'>Hide</button></td>");
                                                     out.println("</tr>");
                                                 }
                                             %>

@@ -97,7 +97,7 @@
 
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
-                    <a class="nav-link" href="teacherAttendance.jsp">
+                    <a class="nav-link" href="HandleTakeAttendance?action=showAttendance">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Take Attendance</span></a>
                 </li>
