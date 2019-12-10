@@ -9,7 +9,7 @@
 <%@page import="ict.bean.AttendanceBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if(session.getAttribute("isLoggedIn") == null) {
+    if (session.getAttribute("isLoggedIn") == null) {
         response.sendRedirect("login.jsp");
     }
     String firstname = (String) session.getAttribute("firstname");
@@ -19,24 +19,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/script.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script> 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
         <!-- Custom fonts-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,26 +29,7 @@
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
         <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script>
-            $(document).ready(function () {
-                $("#datepicker").datepicker({
-                    format: 'yyyy-mm-dd'
-                });
-                $('#datepicker').change(function(){
-                    window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
-                });
-                $('.btn_hide').click(function(){
 
-                    alert($(this).closest('td').prev('.contact_name').text());
-
-                });
-                $('.btn_attendance').click(function(){
-
-                    alert($(this).closest('td').prev('.aid').text());
-
-                });
-            });
-        </script>
         <title>JSP Page</title>
     </head>
     <body id="page-top">
@@ -371,24 +334,24 @@
                                                 for (int i = 0; i < accounts.size(); i++) {
                                                     AccountBean a = accounts.get(i);
                                                     String date = request.getParameter("date");
-                                                    if(!a.getCid().equals(cid) || a.getRole().equals("teacher")){
+                                                    if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
                                                         continue;
                                                     }
                                                     out.println("<tr>");
                                                     out.println("<td class='aid'>" + a.getAid() + "</td>");
                                                     out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
                                                     out.println("<td>");
-                                                    if(date != null){
-                                                        for(int n = 0; n < attendance.size(); n++){
-                                                            if(attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus()){
+                                                    if (date != null) {
+                                                        for (int n = 0; n < attendance.size(); n++) {
+                                                            if (attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus()) {
                                                                 out.println("<button class='btn btn_attendance'>Attended</button>");
                                                                 notAttended = false;
                                                                 break;
-                                                            }else{
+                                                            } else {
                                                                 notAttended = true;
                                                             }
                                                         }
-                                                        if(notAttended){
+                                                        if (notAttended) {
                                                             out.println("<button class='btn btn_attendance'>Not Attended</button>");
                                                         }
                                                     }
@@ -450,3 +413,34 @@
         </div>
     </body>
 </html>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/script.min.js"></script>
+
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#datepicker').change(function () {
+            window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
+        });
+        $('.btn_hide').click(function () {
+            alert($(this).closest('tr').find("td:eq(3)").text());
+        });
+        $('.btn_attendance').click(function () {
+            alert($(this).closest('tr').find("td:eq(0)").text());
+        });
+    });
+</script>
