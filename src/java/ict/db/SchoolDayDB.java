@@ -39,7 +39,7 @@ public class SchoolDayDB {
         ArrayList<String> sdba = new <String> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM schoolday WHERE cid = '"+cid+"'";
+            String preQueryStatement = "SELECT * FROM schoolday WHERE cid = '" + cid + "'";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             ResultSet rs;
             rs = pStmnt.executeQuery();

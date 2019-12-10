@@ -314,7 +314,7 @@
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Account</h6>
+                                <h6 class="m-0 font-weight-bold text-primary"><%=request.getParameter("date")!= null ? request.getParameter("date") : "Please select a date"%></h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -323,7 +323,7 @@
                                             <tr>
                                                 <th>Account ID</th>
                                                 <th>Name</th>
-                                                <th></th>
+                                                <th>Attendance</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -331,33 +331,45 @@
                                             <jsp:useBean id="attendance" class="ArrayList<AttendanceBean>" scope="request" />
                                             <%
                                                 boolean notAttended = false;
-                                                for (int i = 0; i < accounts.size(); i++) {
-                                                    AccountBean a = accounts.get(i);
-                                                    String date = request.getParameter("date");
-                                                    if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
-                                                        continue;
+                                                boolean isSchoolDay = false;
+                                                ArrayList<String> schoolDays = (ArrayList<String>)request.getAttribute("schoolDays");
+                                                String date = request.getParameter("date") != null ? request.getParameter("date") : "fail";
+                                                for(int i = 0; i < schoolDays.size(); i++){
+                                                    if(date.equals(schoolDays.get(i))){
+                                                        isSchoolDay = true;
+                                                        break;
                                                     }
-                                                    out.println("<tr>");
-                                                    out.println("<td class='aid'>" + a.getAid() + "</td>");
-                                                    out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
-                                                    out.println("<td>");
-                                                    if (date != null) {
-                                                        for (int n = 0; n < attendance.size(); n++) {
-                                                            if (attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus()) {
-                                                                out.println("<button class='btn btn_attendance'>Attended</button>");
-                                                                notAttended = false;
-                                                                break;
-                                                            } else {
-                                                                notAttended = true;
+                                                }
+                                                if(date.equals("fail")){
+                                                    isSchoolDay = true;
+                                                }
+                                                if(isSchoolDay){
+                                                    for (int i = 0; i < accounts.size(); i++) {
+                                                        AccountBean a = accounts.get(i);
+                                                        if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
+                                                            continue;
+                                                        }
+                                                        out.println("<tr>");
+                                                        out.println("<td class='aid'>" + a.getAid() + "</td>");
+                                                        out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
+                                                        out.println("<td>");
+                                                        if (!date.equals("fail")) {
+                                                            for (int n = 0; n < attendance.size(); n++) {
+                                                                if (attendance.get(n).getAid().equals(a.getAid()) && attendance.get(n).getDate().equals(date) && attendance.get(n).getStatus()) {
+                                                                    out.println("<button class='btn_attendance form-control'>Attended</button>");
+                                                                    notAttended = false;
+                                                                    break;
+                                                                } else {
+                                                                    notAttended = true;
+                                                                }
+                                                            }
+                                                            if (notAttended) {
+                                                                out.println("<button class='btn_attendance form-control'>Not Attended</button>");
                                                             }
                                                         }
-                                                        if (notAttended) {
-                                                            out.println("<button class='btn btn_attendance'>Not Attended</button>");
-                                                        }
+                                                        out.println("</td>");
+                                                        out.println("</tr>");
                                                     }
-                                                    out.println("</td>");
-                                                    out.println("<td class='contact_name' style='padding: 7px 0;'>Name 1</td><td><button class='btn_hide'>Hide</button></td>");
-                                                    out.println("</tr>");
                                                 }
                                             %>
                                         </tbody>
@@ -436,11 +448,29 @@
         $('#datepicker').change(function () {
             window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
         });
-        $('.btn_hide').click(function () {
-            alert($(this).closest('tr').find("td:eq(3)").text());
-        });
         $('.btn_attendance').click(function () {
-            alert($(this).closest('tr').find("td:eq(0)").text());
+            var status;
+            var date = getUrlParameter('date');
+            if($(this).text() == "Attended"){
+                status = 0;
+            }else{
+                status = 1;
+            }
+            window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + date + "&aid=" +  $(this).closest('tr').find("td:eq(0)").text() + "&status=" + status;
         });
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+        };
     });
 </script>

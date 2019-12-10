@@ -7,27 +7,25 @@ package ict.servlet;
 
 import ict.bean.AccountBean;
 import ict.db.AccountDB;
+import ict.bean.SchoolDayBean;
+import ict.db.SchoolDayDB;
 import ict.bean.AttendanceBean;
 import ict.db.AttendanceDB;
-import ict.db.SchoolDayDB;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author chush
  */
-@WebServlet(name = "HandleTakeAttendance", urlPatterns = {"/HandleTakeAttendance"})
-public class HandleTakeAttendance extends HttpServlet {
+@WebServlet(name = "HandleStudentList", urlPatterns = {"/HandleStudentList"})
+public class HandleStudentList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,8 +37,8 @@ public class HandleTakeAttendance extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private AccountDB acdb;
-    private AttendanceDB attendb;
     private SchoolDayDB sddb;
+    private AttendanceDB attendb;
     
     @Override
     public void init() {
@@ -51,46 +49,19 @@ public class HandleTakeAttendance extends HttpServlet {
         dbUrl = getServletContext().getInitParameter("dbUrl"); 
         //2.  create a new db object  with the parameter
         acdb = new AccountDB(dbUrl,dbUser,dbPassword);
-        attendb = new AttendanceDB(dbUrl,dbUser,dbPassword);
         sddb = new SchoolDayDB(dbUrl,dbUser,dbPassword);
-    }
-    
+        attendb = new AttendanceDB(dbUrl,dbUser,dbPassword);
+    } 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        if("showAttendance".equalsIgnoreCase(action)){
-            ArrayList<AccountBean> accounts;
-            ArrayList<AttendanceBean> attendance;
-            ArrayList<String> schoolDays;
-            try {
-                accounts = acdb.queryAcc();
-                attendance = attendb.queryAtt();
-                HttpSession session = request.getSession();
-                String cid = (String)session.getAttribute("cid");
-                schoolDays = sddb.querySchoolDayByCid(cid);
-                request.setAttribute("accounts", accounts);
-                request.setAttribute("attendance", attendance);
-                request.setAttribute("schoolDays", schoolDays);
-                //redirect
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/teacherAttendance.jsp");
-                rd.forward(request, response);
-            } catch (SQLException ex) {
-                PrintWriter out = response.getWriter();
-                out.println(ex.getMessage());
-            }
-        }else if ("takeAttendance".equalsIgnoreCase(action)){
-            String aid = request.getParameter("aid");
-            String date = request.getParameter("date");
-            String status = request.getParameter("status");
-            if(!attendb.editRecord(date, aid, status)){
-                attendb.addRecord(date, aid, status);
-            }
+        if ("showAll".equalsIgnoreCase(action)) {
+
+            request.setAttribute("classes", classes);
+            //redirect
             RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/HandleTakeAttendance?action=showAttendance&date" + date);
+            rd = getServletContext().getRequestDispatcher("/listClass.jsp");
             rd.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
