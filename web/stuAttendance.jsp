@@ -8,7 +8,8 @@
 <%@page import="ict.bean.AttendanceBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if(session.getAttribute("isLoggedIn")==null || session.getAttribute("role") != "student"){
+    String roleSession = (String) session.getAttribute("role");
+    if(session.getAttribute("isLoggedIn") == null || !(roleSession.equalsIgnoreCase("student"))){
     response.sendRedirect("login.jsp");
     }
     String firstname = (String)session.getAttribute("firstname");
@@ -34,46 +35,44 @@
       <!-- Page Wrapper -->
       <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
-      </a>
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
+                </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Interface
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="handleAttendance?action=showMyAtt">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Attendance Records</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="stuTimeTable.jsp">
+                        <i class="far fa-fw fa-calendar-alt"></i>
+                        <span>List My School Days</span></a>
+                </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
-        <li class="nav-item">
-            <a class="nav-link" href="handleAttendance?action=showMyAtt">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Attendance Records</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="stuTimeTable.jsp">
-                <i class="far fa-fw fa-calendar-alt"></i>
-                <span>List My School Days</span></a>
-        </li>
-    </ul>
-    <!-- End of Sidebar -->
+            </ul>
+            <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
