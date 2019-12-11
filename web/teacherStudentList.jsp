@@ -71,7 +71,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="teacherIndex.html">
+                    <a class="nav-link" href="teacherIndex.jsp">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
@@ -384,7 +384,11 @@
                                                     }
                                                     out.println(attendedDays + "</td>");
                                                     out.println("<td>");
-                                                    out.println((attendedDays*100/schoolDays.size()) + "%</td>");
+                                                    if(schoolDays.size() == 0){
+                                                        out.println("No School Day</td>");
+                                                    }else{
+                                                        out.println((attendedDays*100/schoolDays.size()) + "%</td>");
+                                                    }
                                                     out.println("</td>");
                                                     out.println("</tr>");
                                                 }
