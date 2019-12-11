@@ -57,7 +57,10 @@ public class HandleAttendance extends HttpServlet {
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/stuAttendance.jsp");
             rd.forward(request, response);
-        }else {
+        }else if("getTotal".equalsIgnoreCase(action)){
+            db.getTotal(action, action)
+               
+            }else {
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
         }

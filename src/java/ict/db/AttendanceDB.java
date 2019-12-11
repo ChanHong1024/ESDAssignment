@@ -15,32 +15,33 @@ import java.util.ArrayList;
  * @author Chan Wai Hong / Chu Shing Fung
  */
 public class AttendanceDB {
-    private String url="";
-    private String username="";
-    private String password="";
-    
-    public AttendanceDB(String url,String username,String password){
+
+    private String url = "";
+    private String username = "";
+    private String password = "";
+
+    public AttendanceDB(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
-    
-    public Connection getConnection() throws SQLException, IOException{
-        try{
+
+    public Connection getConnection() throws SQLException, IOException {
+        try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+        }
+        return DriverManager.getConnection(url, username, password);
     }
-        return DriverManager.getConnection(url,username,password);
-    }
-    
-   public ArrayList<AttendanceBean> queryAttByAid(String aid){
+
+    public ArrayList<AttendanceBean> queryAttByAid(String aid) {
         Connection cnnct;
         PreparedStatement pStmnt;
         ArrayList<AttendanceBean> aab = new <AttendanceBean> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM attendance WHERE aid = '"+aid+"'";
+            String preQueryStatement = "SELECT * FROM attendance WHERE aid = '" + aid + "'";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             ResultSet rs;
             rs = pStmnt.executeQuery();
@@ -56,9 +57,10 @@ public class AttendanceDB {
         } catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }
-        return aab;  
+        return aab;
     }
-    public ArrayList<AttendanceBean> queryAtt(){
+
+    public ArrayList<AttendanceBean> queryAtt() {
         Connection cnnct;
         PreparedStatement pStmnt;
         ArrayList<AttendanceBean> aab = new <AttendanceBean> ArrayList();
@@ -80,14 +82,14 @@ public class AttendanceDB {
         } catch (SQLException | IOException ex) {
             ex.printStackTrace();
         }
-        return aab;  
+        return aab;
     }
-    
-    public boolean addRecord(String date, String aid, String status){
+
+    public boolean addRecord(String date, String aid, String status) {
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         boolean isSuccess = false;
-        try{
+        try {
             cnnct = getConnection();
             String preQueryStatement = "INSERT INTO attendance VALUES (?,?,?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
@@ -95,7 +97,7 @@ public class AttendanceDB {
             pStmnt.setString(2, aid);
             pStmnt.setString(3, status);
             int rowCount = pStmnt.executeUpdate();
-            if(rowCount >= 1){
+            if (rowCount >= 1) {
                 isSuccess = true;
             }
             pStmnt.close();
@@ -104,18 +106,18 @@ public class AttendanceDB {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
-            }            
-        } catch (IOException ex){
+            }
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return isSuccess;
     }
-        
-    public boolean editRecord(String date, String aid, String status){
-        Connection cnnct = null;
-        PreparedStatement pStmnt = null;
+
+    public boolean editRecord(String date, String aid, String status) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
         boolean isSuccess = false;
-        try{
+        try {
             cnnct = getConnection();
             String preQueryStatement = "UPDATE attendance "
                     + "SET date = ?, aid = ?, status = ? "
@@ -127,7 +129,7 @@ public class AttendanceDB {
             pStmnt.setString(4, aid);
             System.out.println(pStmnt);
             int rowCount = pStmnt.executeUpdate();
-            if(rowCount >= 1){
+            if (rowCount >= 1) {
                 isSuccess = true;
             }
             pStmnt.close();
@@ -136,10 +138,33 @@ public class AttendanceDB {
             while (ex != null) {
                 ex.printStackTrace();
                 ex = ex.getNextException();
-            }            
-        } catch (IOException ex){
+            }
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return isSuccess;
+    }
+
+    public int getTotal(String aid,String cid) throws SQLException, IOException {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        int count,sum;
+        cnnct = getConnection();
+        String preQueryStatement = "SELECT count(*) FROM `attendance` WHERE aid=\"?\" and status = true";
+        pStmnt = cnnct.prepareStatement(preQueryStatement);
+        pStmnt.setString(1, aid);
+        System.out.println(pStmnt);
+        ResultSet rs;
+        rs = pStmnt.executeQuery();
+        count =  rs.getInt(1);
+        preQueryStatement = "SELECT count(*) FROM `schoolday` WHERE cid=\"?\"";
+        pStmnt = cnnct.prepareStatement(preQueryStatement);
+        pStmnt.setString(1, cid);
+        System.out.println(pStmnt);
+        rs = pStmnt.executeQuery();
+        sum =  rs.getInt(1);
+        pStmnt.close();
+        cnnct.close();
+        return (count/sum)*100;
     }
 }

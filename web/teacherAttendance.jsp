@@ -309,7 +309,7 @@
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Attendance System</h1>
-                            <input type="text" id="datepicker" width="276" />
+                            <input class="form-control" type="text" id="datepicker" width="276" readonly/>
                         </div>
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
