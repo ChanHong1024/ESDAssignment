@@ -7,18 +7,20 @@ package ict.servlet;
 
 import ict.bean.AccountBean;
 import ict.db.AccountDB;
-import ict.bean.SchoolDayBean;
 import ict.db.SchoolDayDB;
 import ict.bean.AttendanceBean;
 import ict.db.AttendanceDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -55,13 +57,7 @@ public class HandleStudentList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if ("showAll".equalsIgnoreCase(action)) {
-
-            request.setAttribute("classes", classes);
-            //redirect
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listClass.jsp");
-            rd.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,6 +73,26 @@ public class HandleStudentList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        ArrayList<AccountBean> accounts;
+        ArrayList<AttendanceBean> attendance;
+        ArrayList<String> schoolDays;
+        try {
+            accounts = acdb.queryAcc();
+            attendance = attendb.queryAtt();
+            HttpSession session = request.getSession();
+            String cid = (String)session.getAttribute("cid");
+            schoolDays = sddb.querySchoolDayByCid(cid);
+            request.setAttribute("accounts", accounts);
+            request.setAttribute("attendance", attendance);
+            request.setAttribute("schoolDays", schoolDays);
+            //redirect
+            RequestDispatcher rd;
+            rd = getServletContext().getRequestDispatcher("/teacherStudentList.jsp");
+            rd.forward(request, response);
+        } catch (SQLException ex) {
+            PrintWriter out = response.getWriter();
+            out.println(ex.getMessage());
+        }
     }
 
     /**

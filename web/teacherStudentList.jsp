@@ -5,6 +5,8 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="ict.bean.AccountBean"%>
+<%@page import="ict.bean.AttendanceBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (session.getAttribute("isLoggedIn") == null) {
@@ -46,11 +48,6 @@
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script>
-            $(document).ready(function () {
-                $('#datepicker').datepicker();
-            });
-        </script>
         <title>JSP Page</title>
     </head>
     <body id="page-top">
@@ -329,42 +326,69 @@
 
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Attendance System</h1>
-                            <input type="text" id="datepicker" width="276" />
+                            <h1 class="h3 mb-0 text-gray-800">Student List</h1>
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                Total School Day(s): 
+                                <%
+                                    ArrayList<String> schoolDays = (ArrayList<String>)request.getAttribute("schoolDays");
+                                    out.println(schoolDays.size());
+                                %>
+                            </h6>
                         </div>
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Account</h6>
+                                <h6 class="m-0 font-weight-bold text-primary"><%=cid%></h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th class=""></th>
-                                                <th></th>
+                                                <th>Account ID</th>
+                                                <th>Name</th>
+                                                <th>Attended School Days(s)</th>
+                                                <th>Attendance Rate(%)</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th>Account ID</th>
+                                                <th>Name</th>
+                                                <th>Attended School Days(s)</th>
+                                                <th>Attendance Rate</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                            <jsp:useBean id="accounts" class="ArrayList<AccountBean>" scope="request" />
+                                            <jsp:useBean id="attendance" class="ArrayList<AttendanceBean>" scope="request" />
+                                            <%
+                                                for (int i = 0; i < accounts.size(); i++) {
+                                                    AccountBean a = accounts.get(i);
+                                                    int attendedDays = 0;
+                                                    if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
+                                                        continue;
+                                                    }
+                                                    out.println("<tr>");
+                                                    out.println("<td>" + a.getAid() + "</td>");
+                                                    out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
+                                                    out.println("<td>");
+                                                    for(int n = 0; n < attendance.size(); n++){
+                                                        AttendanceBean atten = attendance.get(n);
+                                                        for(int d = 1; d < schoolDays.size(); d++){
+                                                            if (atten.getAid().equals(a.getAid()) && atten.getDate().equals(schoolDays.get(d)) && atten.getStatus()) {
+                                                                attendedDays++;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    out.println(attendedDays + "</td>");
+                                                    out.println("<td>");
+                                                    out.println((attendedDays*100/schoolDays.size()) + "%</td>");
+                                                    out.println("</td>");
+                                                    out.println("</tr>");
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
