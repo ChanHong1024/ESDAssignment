@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
-    if(session.getAttribute("isLoggedIn")==null){
+    String roleSession = (String) session.getAttribute("role");
+    if (session.getAttribute("isLoggedIn") == null || !(roleSession.equalsIgnoreCase("teacher"))) {
         response.sendRedirect("login.jsp");
     }
     String firstname = (String)session.getAttribute("firstname");
@@ -39,16 +40,6 @@
         </div>
         <div class="sidebar-brand-text mx-3">Attendence<sup>2</sup></div>
       </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="teacherIndex.jsp">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
