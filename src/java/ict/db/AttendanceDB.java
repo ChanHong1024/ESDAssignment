@@ -9,6 +9,7 @@ import ict.bean.AttendanceBean;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  *
@@ -41,8 +42,9 @@ public class AttendanceDB {
         ArrayList<AttendanceBean> aab = new <AttendanceBean> ArrayList();
         try {
             cnnct = getConnection();
-            String preQueryStatement = "SELECT * FROM attendance WHERE aid = '" + aid + "'";
+            String preQueryStatement = "SELECT * FROM attendance WHERE aid = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, aid);
             ResultSet rs;
             rs = pStmnt.executeQuery();
             while (rs.next()) {
@@ -145,26 +147,32 @@ public class AttendanceDB {
         return isSuccess;
     }
 
-    public int getTotal(String aid,String cid) throws SQLException, IOException {
+    public Vector getTotal(String aid, String cid) throws SQLException, IOException {
         Connection cnnct;
         PreparedStatement pStmnt;
-        int count,sum;
+        double count = 0, sum=0;
         cnnct = getConnection();
-        String preQueryStatement = "SELECT count(*) FROM `attendance` WHERE aid=\"?\" and status = true";
+        String preQueryStatement = "SELECT count(*) FROM `attendance` WHERE aid=? and status = true";
         pStmnt = cnnct.prepareStatement(preQueryStatement);
         pStmnt.setString(1, aid);
         System.out.println(pStmnt);
         ResultSet rs;
         rs = pStmnt.executeQuery();
-        count =  rs.getInt(1);
-        preQueryStatement = "SELECT count(*) FROM `schoolday` WHERE cid=\"?\"";
+        if (rs.next()) {
+            count = rs.getInt(1);
+        }
+        preQueryStatement = "SELECT count(*) FROM `schoolday` WHERE cid=?";
         pStmnt = cnnct.prepareStatement(preQueryStatement);
         pStmnt.setString(1, cid);
         System.out.println(pStmnt);
         rs = pStmnt.executeQuery();
-        sum =  rs.getInt(1);
-        pStmnt.close();
-        cnnct.close();
-        return (count/sum)*100;
+        if (rs.next()) {
+            sum = rs.getInt(1);
+        }
+        Vector _num = new Vector();
+        _num.add(count);
+        _num.add(sum);
+        return _num;
+
     }
 }

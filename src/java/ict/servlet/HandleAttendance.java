@@ -9,7 +9,11 @@ import ict.bean.AttendanceBean;
 import ict.db.AttendanceDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +21,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author Chan Wai Hong / Chu Shing Fung
  */
 @WebServlet(name = "HandleAttendance", urlPatterns = {"/handleAttendance"})
 public class HandleAttendance extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,34 +39,46 @@ public class HandleAttendance extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private AttendanceDB db;
-    
+
     @Override
     public void init() {
         //1.  obtain the context-param, dbUser, dbPassword and dbUrl which defined in web.xml
-        String dbUser,dbPassword,dbUrl;
+        String dbUser, dbPassword, dbUrl;
         dbUser = getServletContext().getInitParameter("dbUser");
         dbPassword = getServletContext().getInitParameter("dbPassword");
-        dbUrl = getServletContext().getInitParameter("dbUrl"); 
+        dbUrl = getServletContext().getInitParameter("dbUrl");
         //2.  create a new db object  with the parameter
-        db = new AttendanceDB(dbUrl,dbUser,dbPassword);
-    } 
-    
+        db = new AttendanceDB(dbUrl, dbUser, dbPassword);
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if ("showMyAtt".equalsIgnoreCase(action)) {
             HttpSession session = request.getSession();
-            ArrayList<AttendanceBean> att = db.queryAttByAid((String)session.getAttribute("aid")); 
+            ArrayList<AttendanceBean> att = db.queryAttByAid((String) session.getAttribute("aid"));
             request.setAttribute("att", att);
             //redirect
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/stuAttendance.jsp");
             rd.forward(request, response);
-        }else if("getTotal".equalsIgnoreCase(action)){
-            db.getTotal(action, action)
-               
-            }else {
+        } else if ("getTotal".equalsIgnoreCase(action)) {
+            try {
+                PrintWriter out = response.getWriter();
+                HttpSession session = request.getSession();
+                String aid = (String) session.getAttribute("aid");
+                String cid = (String) session.getAttribute("cid");
+                Vector _num = new Vector();
+                _num = db.getTotal(aid, cid);
+                double count = (double)_num.get(0);
+                double base = (double)_num.get(1);
+                int sum = (int)((count/base)*100);
+                out.println(sum+"%("+(int)count+"/"+(int)base+")");
+            } catch (SQLException ex) {
+                Logger.getLogger(HandleAttendance.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             PrintWriter out = response.getWriter();
             out.println("<h1>No such action!!!</h1>");
         }
