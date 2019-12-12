@@ -333,12 +333,15 @@
 
         $('#datepicker').change(function () {
             $.getJSON('handleTimeTable?cid=<%=cid%>', function (data) {
-                var sdArray = [];
+                var isInvaild = false;
                 $.each(data, function (index, d) {
-                    sdArray.push(d.start);
+                    if (d.start === $('#datepicker').val()) {
+                        isInvaild = true;
+                    }
                 });
-                if (jQuery.inArray($('#datepicker').val(), sdArray) !== 0) {
-                    alert("not a vaild selection!!","warning");
+
+                if (!isInvaild) {
+                    alert("not a vaild selection!!", "warning");
                     window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();
                 } else {
                     window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();
