@@ -19,24 +19,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/script.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script> 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
         <!-- Custom fonts-->
         <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -59,7 +41,7 @@
             <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -330,7 +312,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">
                                 Total School Day(s): 
                                 <%
-                                    ArrayList<String> schoolDays = (ArrayList<String>)request.getAttribute("schoolDays");
+                                    ArrayList<String> schoolDays = (ArrayList<String>) request.getAttribute("schoolDays");
                                     out.println(schoolDays.size());
                                 %>
                             </h6>
@@ -366,16 +348,18 @@
                                                 for (int i = 0; i < accounts.size(); i++) {
                                                     AccountBean a = accounts.get(i);
                                                     int attendedDays = 0;
-                                                    if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
+                                                    String aCid = a.getCid() !=null ? a.getCid():"";
+                                                    String aRole = a.getRole();
+                                                    if (!(aCid.equals(cid)) || aRole.equals("teacher")) {
                                                         continue;
                                                     }
                                                     out.println("<tr>");
                                                     out.println("<td>" + a.getAid() + "</td>");
                                                     out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
                                                     out.println("<td>");
-                                                    for(int n = 0; n < attendance.size(); n++){
+                                                    for (int n = 0; n < attendance.size(); n++) {
                                                         AttendanceBean atten = attendance.get(n);
-                                                        for(int d = 1; d < schoolDays.size(); d++){
+                                                        for (int d = 1; d < schoolDays.size(); d++) {
                                                             if (atten.getAid().equals(a.getAid()) && atten.getDate().equals(schoolDays.get(d)) && atten.getStatus()) {
                                                                 attendedDays++;
                                                                 break;
@@ -384,10 +368,10 @@
                                                     }
                                                     out.println(attendedDays + "</td>");
                                                     out.println("<td>");
-                                                    if(schoolDays.size() == 0){
+                                                    if (schoolDays.size() == 0) {
                                                         out.println("No School Day</td>");
-                                                    }else{
-                                                        out.println((attendedDays*100/schoolDays.size()) + "%</td>");
+                                                    } else {
+                                                        out.println((attendedDays * 100 / schoolDays.size()) + "%</td>");
                                                     }
                                                     out.println("</td>");
                                                     out.println("</tr>");
@@ -446,3 +430,21 @@
         </div>
     </body>
 </html>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/script.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>

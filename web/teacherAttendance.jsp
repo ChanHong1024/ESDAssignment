@@ -41,7 +41,7 @@
             <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="login.jsp">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-check-circle"></i>
                     </div>
@@ -346,7 +346,8 @@
                                                 if(isSchoolDay){
                                                     for (int i = 0; i < accounts.size(); i++) {
                                                         AccountBean a = accounts.get(i);
-                                                        if (!a.getCid().equals(cid) || a.getRole().equals("teacher")) {
+                                                        String aCid = a.getCid() !=null ? a.getCid():"";
+                                                        if (!(aCid.equals(cid)) || a.getRole().equals("teacher")) {
                                                             continue;
                                                         }
                                                         out.println("<tr>");

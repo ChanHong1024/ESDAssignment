@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,11 +59,11 @@ public class HandleStudentList extends HttpServlet {
     } 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ArrayList<AccountBean> accounts;
-        ArrayList<AttendanceBean> attendance;
-        ArrayList<String> schoolDays;
         try {
+            response.setContentType("text/html;charset=UTF-8");
+            ArrayList<AccountBean> accounts;
+            ArrayList<AttendanceBean> attendance;
+            ArrayList<String> schoolDays;
             accounts = acdb.queryAcc();
             attendance = attendb.queryAtt();
             HttpSession session = request.getSession();
@@ -74,8 +77,7 @@ public class HandleStudentList extends HttpServlet {
             rd = getServletContext().getRequestDispatcher("/teacherStudentList.jsp");
             rd.forward(request, response);
         } catch (SQLException ex) {
-            PrintWriter out = response.getWriter();
-            out.println(ex.getMessage());
+            Logger.getLogger(HandleStudentList.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
