@@ -243,7 +243,8 @@
                                                     out.println("<td>");
                                                     for (int n = 0; n < attendance.size(); n++) {
                                                         AttendanceBean atten = attendance.get(n);
-                                                        for (int d = 1; d < schoolDays.size(); d++) {
+                                                        for (int d = 0; d < schoolDays.size(); d++) {
+                                                            out.print(atten.getAid()+","+a.getAid()+"\n"+atten.getDate()+","+schoolDays.get(d)+"\n");
                                                             if (atten.getAid().equals(a.getAid()) && atten.getDate().equals(schoolDays.get(d)) && atten.getStatus()) {
                                                                 attendedDays++;
                                                                 break;
