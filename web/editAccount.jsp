@@ -243,7 +243,7 @@
                                     </select><br>
                                     First Name(255) <input class="form-control" name="firstname"  type="text" value="<%=firstname%>" required/> <br>
                                     Last Name(255) <input class="form-control" name="lastname"  type="text" value="<%=lastname%>" required/> <br>
-                                    Password(255) <input class="form-control" name="password" title="255 letters and digits only" pattern="[a-zA-Z0-9]255"  type="password" value="<%=password%>" required/> <br>
+                                    Password(255) <input class="form-control" name="password" title="1 ~ 255 letters and digits only" pattern="[a-zA-Z0-9]{1,255}"  type="password" value="<%=password%>" required/> <br>
                                     <td><input class="btn btn-primary" type="submit" value="submit"/> <br>
                                 </form>
                             </div>

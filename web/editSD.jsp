@@ -214,7 +214,7 @@
                                     <input class="form-control" type="hidden" name="action"  value="Schedule" required/>
                                     Class <select name="cid"  id="classSelect" class="form-control">
                                     </select><br>
-                                    Date <input class="form-control" name="date" id="date"  type="text" eadonly="" required/> <br>
+                                    Date <input class="form-control" name="date" id="date"  type="text" eadonly="" required readonly/> <br>
                                     <input class="btn btn-primary" type="submit" value="Submit"/>
                                     <br>
                                 </form>

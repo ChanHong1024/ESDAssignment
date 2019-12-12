@@ -275,9 +275,9 @@
             function printDiv() {
                 var divContents = document.getElementById("table").innerHTML;
                 divContents = divContents.replace("<i class=\"fas fa-check\"></i>", "attended").replace("<i class=\"fas fa-times\"></i>", "absence");
-                var a = window.open('', '', 'height=500, width=500');
+                var a = window.open('', '', 'height=500, width=1000');
                 a.document.write('<html>');
-                a.document.write('<body> <h1>Attendance Records<br> <table border="1">');
+                a.document.write('<body style="text-align: center;"> <h1>Attendance Records of <%=firstname%> <%=lastname%> </h1><br> <table border="1" style="width: 100%;text-align: center;">');
                 a.document.write(divContents);
                 a.document.write('</table></body></html>');
                 a.document.close();
