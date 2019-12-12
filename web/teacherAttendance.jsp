@@ -198,7 +198,7 @@
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary"><%=request.getParameter("date")!= null ? request.getParameter("date") : "Please select a date"%></h6>
+                                <h6 class="m-0 font-weight-bold text-primary"><%=request.getParameter("date") != null ? request.getParameter("date") : "Please select a date"%></h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -216,21 +216,21 @@
                                             <%
                                                 boolean notAttended = false;
                                                 boolean isSchoolDay = false;
-                                                ArrayList<String> schoolDays = (ArrayList<String>)request.getAttribute("schoolDays");
+                                                ArrayList<String> schoolDays = (ArrayList<String>) request.getAttribute("schoolDays");
                                                 String date = request.getParameter("date") != null ? request.getParameter("date") : "fail";
-                                                for(int i = 0; i < schoolDays.size(); i++){
-                                                    if(date.equals(schoolDays.get(i))){
+                                                for (int i = 0; i < schoolDays.size(); i++) {
+                                                    if (date.equals(schoolDays.get(i))) {
                                                         isSchoolDay = true;
                                                         break;
                                                     }
                                                 }
-                                                if(date.equals("fail")){
+                                                if (date.equals("fail")) {
                                                     isSchoolDay = true;
                                                 }
-                                                if(isSchoolDay){
+                                                if (isSchoolDay) {
                                                     for (int i = 0; i < accounts.size(); i++) {
                                                         AccountBean a = accounts.get(i);
-                                                        String aCid = a.getCid() !=null ? a.getCid():"";
+                                                        String aCid = a.getCid() != null ? a.getCid() : "";
                                                         if (!(aCid.equals(cid)) || a.getRole().equals("teacher")) {
                                                             continue;
                                                         }
@@ -330,24 +330,37 @@
         $("#datepicker").datepicker({
             format: 'yyyy-mm-dd'
         });
+
         $('#datepicker').change(function () {
-            window.location.href = "HandleTakeAttendance?action=showAttendance&date=" + this.value;
+            $.getJSON('handleTimeTable?cid=<%=cid%>', function (data) {
+                var sdArray = [];
+                $.each(data, function (index, d) {
+                    sdArray.push(d.start);
+                });
+                if (jQuery.inArray($('#datepicker').val(), sdArray) !== 0) {
+                    alert("not a vaild selection!!","warning");
+                    window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();
+                } else {
+                    window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();
+                }
+            });
         });
+
         $('.btn_attendance').click(function () {
             var status;
             var date = getUrlParameter('date');
-            if($(this).text() == "Attended"){
+            if ($(this).text() === "Attended") {
                 status = 0;
-            }else{
+            } else {
                 status = 1;
             }
-            window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + date + "&aid=" +  $(this).closest('tr').find("td:eq(0)").text() + "&status=" + status;
+            window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + date + "&aid=" + $(this).closest('tr').find("td:eq(0)").text() + "&status=" + status;
         });
         function getUrlParameter(sParam) {
             var sPageURL = window.location.search.substring(1),
-                sURLVariables = sPageURL.split('&'),
-                sParameterName,
-                i;
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
 
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
@@ -356,6 +369,7 @@
                     return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                 }
             }
-        };
+        }
+        ;
     });
 </script>

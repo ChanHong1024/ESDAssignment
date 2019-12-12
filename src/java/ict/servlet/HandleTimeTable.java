@@ -67,7 +67,6 @@ public class HandleTimeTable extends HttpServlet {
                 map.put("start", dates.get(i));
                 map.put("url", "javascript:delModal('"+cid+"','"+dates.get(i)+"');");      
             }
-
             jsonArray.put(new JSONObject(map));
         }
         out.print(jsonArray.toString());
