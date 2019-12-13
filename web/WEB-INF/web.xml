@@ -28,4 +28,5 @@
         <param-name>dbPassword</param-name>
         <param-value></param-value>
     </context-param>
+    <!--pls change reportTag.java param if there are any changes in param of access database-->
 </web-app>

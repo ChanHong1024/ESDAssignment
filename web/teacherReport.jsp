@@ -187,47 +187,144 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
-
-                        <!-- Page Heading -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Attendance System</h1>
-                            <input type="text" id="datepicker" width="276" />
-                        </div>
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Account</h6>
+                        <form action="teacherPrintReport.jsp">
+                            <input type="text" name="cid" value="<%=cid%>" hidden/>
+                            <!-- Page Heading -->
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 mb-0 text-gray-800">Attendance Report</h1>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th class=""></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Account</th>
-                                                <th>Class</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>password</th>
-                                                <th>Role</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <div>
+                                    Please choose a style:<br>
+                                    <input type="radio" class="style" name="format" value="simple" checked/>Simple<br>
+                                    <input type="radio" class="style" name="format" value="detail"/>With Detail
+                                </div>
+                                <div>
+                                    Date Until:<input type="text" name="date" id="datepicker" width="276" />
+                                </div>
+                                <input class="btn btn-primary" type="submit" value="Generate">
+                            </div>
+                            <hr>
+                        </form>
+                        <h1 class="h3 mb-0 text-gray-800">Sample:</h1><hr>
+                        <div class="simple">
+                            <h1 class="h3 mb-0 text-gray-800">Attendance Until Date: xxxx-xx-xx</h1>
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="m-0 font-weight-bold text-primary"><%=cid%></h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Total School Day(s):22</h6>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Account ID</th>
+                                                    <th>Name</th>
+                                                    <th>Attended School Days(s)</th>
+                                                    <th>Attendance Rate(%)</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Account ID</th>
+                                                    <th>Name</th>
+                                                    <th>Attended School Days(s)</th>
+                                                    <th>Attendance Rate(%)</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <td>180017531</td>
+                                                    <td>Chan Wai Hong</td>
+                                                    <td>11</td>
+                                                    <td>50%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                
+                        <!-- DataTales Example -->
+                        <div class="detail" style="display:none;">
+                            <h1 class="h3 mb-0 text-gray-800">Student in <%=cid%></h1>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="m-0 font-weight-bold text-primary">Account ID: 180494636</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Name: Chu Shing Fung</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Attendance Until Date: xxxx-xx-xx</h6>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="table" class="table table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Total Attendance Rate(%)</th>
+                                                    <th>100%</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <td>xxxx-xx-xx</td>
+                                                    <td><i class="fas fa-check"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>xxxx-xx-xx</td>
+                                                    <td><i class="fas fa-check"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="m-0 font-weight-bold text-primary">Account ID: 180017531</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Name: Chan Wai Hong</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Attendance Until Date: xxxx-xx-xx</h6>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="table" class="table table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Total Attendance Rate(%)</th>
+                                                    <th>50%</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <td>xxxx-xx-xx</td>
+                                                    <td><i class="fas fa-times"></i></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>xxxx-xx-xx</td>
+                                                    <td><i class="fas fa-check"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -280,26 +377,37 @@
     </body>
 </html>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/script.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/script.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script> 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-                <script>
-            $(document).ready(function () {
-                $('#datepicker').datepicker();
-            });
-        </script>
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script> 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $(".style").click(function () {
+            if ($(this).attr('value') == "simple") {
+                $('.simple').show();
+                $('.detail').hide();
+            } else {
+                $('.simple').hide();
+                $('.detail').show();
+            }
+        });
+    });
+</script>

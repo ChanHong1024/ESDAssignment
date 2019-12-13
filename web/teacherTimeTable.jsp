@@ -192,11 +192,11 @@
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Time Table</h1>
+                            <a href="#" id="printBtn" onclick="printDiv();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Class Schedule</a>
                         </div>
-                        <div class="card shadow mb-4">
+                        <div id="table" class="card shadow mb-4">
                             <div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
                                 <h6 class="m-0 font-weight-bold text-primary"><div id="cid"><%=cid%></div></h6>
-                                </select>
                             </div>
                             <div class="card-body">
                                 <div id='calendar'></div>
@@ -301,4 +301,15 @@
         }
     });
 
+</script>
+<script>
+    function printDiv() {
+        var divToPrint=document.getElementById('table');
+        var css = "<link href='vendor/core/main.css' rel='stylesheet' /><link href='vendor/daygrid/main.css' rel='stylesheet' /><link href='vendor/timegrid/main.css' rel='stylesheet' /><link href='vendor/list/main.css' rel='stylesheet' />";
+        var newWin=window.open('','Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head>'+css+'</head><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+        newWin.document.close();
+        setTimeout(function(){newWin.close();},10);
+    }
 </script>

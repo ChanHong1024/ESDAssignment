@@ -1,12 +1,10 @@
 <%-- 
-    Document   : teacherStudentList
-    Created on : 2019年12月5日, 上午12:32:35
+    Document   : teacherPrintReport
+    Created on : 2019年12月14日, 上午03:32:32
     Author     : chush
 --%>
 
 <%@page import="java.util.ArrayList"%>
-<%@page import="ict.bean.AccountBean"%>
-<%@page import="ict.bean.AttendanceBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     String roleSession = (String) session.getAttribute("role");
@@ -26,9 +24,9 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
         <!-- Custom styles-->
         <link href="css/style.css" rel="stylesheet">
-        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <!-- Custom styles for this page -->
         <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <link rel="icon" href="img/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -189,84 +187,13 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
-
-                        <!-- Page Heading -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Student List</h1>
-                            <h6 class="m-0 font-weight-bold text-primary">
-                                Total School Day(s): 
-                                <%
-                                    ArrayList<String> schoolDays = (ArrayList<String>) request.getAttribute("schoolDays");
-                                    out.println(schoolDays.size());
-                                %>
-                            </h6>
-                        </div>
-                        <!-- DataTales Example -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary"><%=cid%></h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Account ID</th>
-                                                <th>Name</th>
-                                                <th>Attended School Days(s)</th>
-                                                <th>Attendance Rate(%)</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Account ID</th>
-                                                <th>Name</th>
-                                                <th>Attended School Days(s)</th>
-                                                <th>Attendance Rate(%)</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                            <jsp:useBean id="accounts" class="ArrayList<AccountBean>" scope="request" />
-                                            <jsp:useBean id="attendance" class="ArrayList<AttendanceBean>" scope="request" />
-                                            <%
-                                                for (int i = 0; i < accounts.size(); i++) {
-                                                    AccountBean a = accounts.get(i);
-                                                    int attendedDays = 0;
-                                                    String aCid = a.getCid() !=null ? a.getCid():"";
-                                                    String aRole = a.getRole();
-                                                    if (!(aCid.equals(cid)) || aRole.equals("teacher")) {
-                                                        continue;
-                                                    }
-                                                    out.println("<tr>");
-                                                    out.println("<td>" + a.getAid() + "</td>");
-                                                    out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
-                                                    out.println("<td>");
-                                                    for (int n = 0; n < attendance.size(); n++) {
-                                                        AttendanceBean atten = attendance.get(n);
-                                                        for (int d = 0; d < schoolDays.size(); d++) {
-                                                            if (atten.getAid().equals(a.getAid()) && atten.getDate().equals(schoolDays.get(d)) && atten.getStatus()) {
-                                                                attendedDays++;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    out.println(attendedDays + "</td>");
-                                                    out.println("<td>");
-                                                    if (schoolDays.size() == 0) {
-                                                        out.println("No School Day</td>");
-                                                    } else {
-                                                        out.println((attendedDays * 100 / schoolDays.size()) + "%</td>");
-                                                    }
-                                                    out.println("</td>");
-                                                    out.println("</tr>");
-                                                }
-                                            %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
+                        <%@ taglib uri="/WEB-INF/tlds/report.tld" prefix="ict" %>
+                        <%
+                               String date = request.getParameter("date");
+                               String format = request.getParameter("format");
+                               String checkcid = request.getParameter("cid");
+                        %>
+                        <ict:report date="<%=date%>" format="<%=format%>" cid="<%=checkcid%>" />
                     </div>
                     <!-- /.container-fluid -->
 
@@ -314,6 +241,7 @@
         </div>
     </body>
 </html>
+
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

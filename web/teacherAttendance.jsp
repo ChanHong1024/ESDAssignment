@@ -193,6 +193,7 @@
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">Attendance System</h1>
+                            <a href="#" id="printBtn" onclick="printDiv();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Attendance Sheet</a>
                             <input class="form-control" type="text" id="datepicker" width="276" readonly/>
                         </div>
                         <!-- DataTales Example -->
@@ -201,7 +202,7 @@
                                 <h6 class="m-0 font-weight-bold text-primary"><%=request.getParameter("date") != null ? request.getParameter("date") : "Please select a date"%></h6>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div id="table" class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
@@ -372,7 +373,19 @@
                     return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                 }
             }
-        }
-        ;
+        };
     });
+</script>
+<script>
+    function printDiv() {
+        var divContents = document.getElementById("table").innerHTML;
+        divContents = divContents.replace('<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">', '<table border="1" width="100%">');
+        var a = window.open('', '', 'height=500, width=1000');
+        a.document.write('<html>');
+        a.document.write('<body style="text-align: center;"> <h1>Attendance Sheet of Class: <%=cid%> </h1>Date:________________<br>');
+        a.document.write(divContents);
+        a.document.write('</table></body></html>');
+        a.document.close();
+        a.print();
+    }
 </script>

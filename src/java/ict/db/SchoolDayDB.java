@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author chush
  */
 public class SchoolDayDB {
-        private String url="";
+    private String url="";
     private String username="";
     private String password="";
     
@@ -124,4 +124,24 @@ public class SchoolDayDB {
         return isSuccess;
     } 
     
+    public ArrayList<String> querySchoolDayByCidDate(String cid, String date){
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        ArrayList<String> sdba = new <String> ArrayList();
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "SELECT * FROM schoolday WHERE cid = '" + cid + "' AND date <= '" + date + "'";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            ResultSet rs;
+            rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                sdba.add(rs.getString(1));
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+        }
+        return sdba;  
+    }
 }
