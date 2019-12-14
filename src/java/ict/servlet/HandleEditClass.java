@@ -66,11 +66,13 @@ public class HandleEditClass extends HttpServlet {
             }
         }else if("Edit".equalsIgnoreCase(action)){
             ClassBean cb = new ClassBean(cid,className);
-            if(db.editClass(cb)){
-            response.sendRedirect("handleClass?action=showAll");
-            }else{
-                PrintWriter out = response.getWriter();
-                out.print("False");
+            try {
+               db.editClass(cb);
+               PrintWriter out = response.getWriter();
+               out.print("True"); 
+            } catch (SQLException ex) {
+               PrintWriter out = response.getWriter();
+               out.print("False"); 
             }
         } else {
             PrintWriter out = response.getWriter();

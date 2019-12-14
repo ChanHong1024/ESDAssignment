@@ -201,7 +201,7 @@
                                     <input type="radio" class="style" name="format" value="detail"/>With Detail
                                 </div>
                                 <div>
-                                    Date Until:<input type="text" name="date" id="datepicker" width="276" />
+                                    Date Until:<input type="text" name="date" id="datepicker" class="form-control" readonly="" width="276" />
                                 </div>
                                 <input class="btn btn-primary" type="submit" value="Generate">
                             </div>

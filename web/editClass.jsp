@@ -307,7 +307,7 @@
                             function (data, status) {
                                 if (data === "True") {
                                     $("#snackbar").css("background-color", "#72b577");
-                                    $("#snackbar").html("Create Success, Redirecting to Class List....");
+                                    $("#snackbar").html("<%=type%> Success, Redirecting to Class List....");
                                     popUpMsg();
                                     setTimeout(function () {
                                         window.location.href = "handleClass?action=showAll";

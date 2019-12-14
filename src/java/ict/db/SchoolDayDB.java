@@ -108,7 +108,24 @@ public class SchoolDayDB {
 
         try {
             cnnct = getConnection();
-            String preQueryStatement = "DELETE FROM schoolday WHERE cid = ? AND date = ?";
+            //Delete Atten. range in School Days
+            String preQueryStatement = "SELECT * FROM `attpluscid` WHERE cid = ? AND date = ?";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, sdb.getCid());
+            pStmnt.setDate(2, sdb.getDate());
+            ResultSet rs;
+            rs = pStmnt.executeQuery();
+            while (rs.next()) {
+                preQueryStatement = "DELETE FROM `attendance` WHERE date = ? AND aid = ?";
+                pStmnt = cnnct.prepareStatement(preQueryStatement);
+                pStmnt.setDate(1, rs.getDate(1));
+                pStmnt.setString(2, rs.getString(2));
+                pStmnt.executeUpdate();
+            }
+            //Delete School Days
+            pStmnt = cnnct.prepareStatement("SET foreign_key_checks = 0;");
+            pStmnt.executeUpdate();
+            preQueryStatement = "DELETE FROM schoolday WHERE cid = ? AND date = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, sdb.getCid());
             pStmnt.setDate(2, sdb.getDate());
@@ -116,6 +133,9 @@ public class SchoolDayDB {
             if (rowCount >= 1) {
                 isSuccess = true;
             }
+            //
+            pStmnt = cnnct.prepareStatement("SET foreign_key_checks = 1;");
+            pStmnt.executeUpdate();
             pStmnt.close();
             cnnct.close();
         } catch (SQLException | IOException ex) {

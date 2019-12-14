@@ -282,6 +282,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <small>*att. records of this schedule will be deleted too.</small><br>
                         <label for="delCid">Class </label>
                         <input class="form-control" id="delCid" type="text" readonly/>
                         <hr>

@@ -114,7 +114,7 @@ public class ClassDB {
         return isSuccess;
     }
 
-    public boolean editClass(ClassBean cb) {
+    public boolean editClass(ClassBean cb) throws SQLException {
         Connection cnnct;
         PreparedStatement pStmnt;
         boolean isSuccess = false;
@@ -132,7 +132,7 @@ public class ClassDB {
             }
             pStmnt.close();
             cnnct.close();
-        } catch (SQLException | IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         return isSuccess;
