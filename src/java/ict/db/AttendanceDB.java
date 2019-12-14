@@ -147,6 +147,37 @@ public class AttendanceDB {
         return isSuccess;
     }
 
+    public boolean TeacherEditRecord(String date, String aid, String status) {
+        Connection cnnct;
+        PreparedStatement pStmnt;
+        boolean isSuccess = false;
+        try {
+            cnnct = getConnection();
+            String preQueryStatement = "UPDATE attendance "
+                    + "SET status = ? "
+                    + "WHERE aid = ? AND date = ?;";
+            pStmnt = cnnct.prepareStatement(preQueryStatement);
+            pStmnt.setString(1, status);
+            pStmnt.setString(2, aid);
+            pStmnt.setString(3, date);
+            System.out.println(pStmnt);
+            int rowCount = pStmnt.executeUpdate();
+            if (rowCount >= 1) {
+                isSuccess = true;
+            }
+            pStmnt.close();
+            cnnct.close();
+        } catch (SQLException ex) {
+            while (ex != null) {
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+    
     public Vector getTotal(String aid, String cid) throws SQLException, IOException {
         Connection cnnct;
         PreparedStatement pStmnt;

@@ -342,7 +342,7 @@
                 });
 
                 if (!isInvaild) {
-                    alert("not a vaild selection!!", "warning");
+                    alert("Not a school day!!", "warning");
                     window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();
                 } else {
                     window.location.href = "HandleTakeAttendance?action=takeAttendance&date=" + $('#datepicker').val();

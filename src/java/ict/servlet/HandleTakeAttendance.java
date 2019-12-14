@@ -84,8 +84,8 @@ public class HandleTakeAttendance extends HttpServlet {
             String aid = request.getParameter("aid");
             String date = request.getParameter("date");
             String status = request.getParameter("status");
-            if(!attendb.editRecord(date, aid, status)){
-                attendb.addRecord(date, aid, status);
+            if(!attendb.addRecord(date, aid, status)){
+                attendb.TeacherEditRecord(date, aid, status);
             }
             RequestDispatcher rd;
             rd = getServletContext().getRequestDispatcher("/HandleTakeAttendance?action=showAttendance&date" + date);
