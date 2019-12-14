@@ -193,6 +193,7 @@
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <h1 class="h3 mb-0 text-gray-800">Attendance Report</h1>
                             </div>
+                            <h4 class="mb-0 text-gray-800">*This will only generate student who have lower than 60% attendance rate.</h4>
                             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                 <div>
                                     Please choose a style:<br>

@@ -10,11 +10,11 @@
     if (session.getAttribute("role") != null) {
         role = (String) session.getAttribute("role");
         if (role.equalsIgnoreCase("student")) {
-            response.sendRedirect("stuIndex.jsp");
+            response.sendRedirect("stuTimeTable.jsp");
         } else if (role.equalsIgnoreCase("admin")) {
-            response.sendRedirect("adminIndex.jsp");
+            response.sendRedirect("handleAccount?action=showAll");
         } else if (role.equalsIgnoreCase("teacher")) {
-            response.sendRedirect("teacherIndex.jsp");
+            response.sendRedirect("teacherTimeTable.jsp");
         }
     }
 %>

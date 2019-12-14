@@ -71,6 +71,7 @@ public class reportTag extends SimpleTagSupport {
 "                                        </tfoot>\n" +
 "                                        <tbody>");
                 for (int i = 0; i < accounts.size(); i++) {
+                    String beforeCal;
                     AccountBean a = accounts.get(i);
                     int attendedDays = 0;
                     String aCid = a.getCid() !=null ? a.getCid():"";
@@ -78,10 +79,10 @@ public class reportTag extends SimpleTagSupport {
                     if (!(aCid.equals(cid)) || aRole.equals("teacher")) {
                         continue;
                     }
-                    out.println("<tr>");
-                    out.println("<td>" + a.getAid() + "</td>");
-                    out.println("<td>" + a.getLastName() + a.getFirstName() + "</td>");
-                    out.println("<td>");
+                    beforeCal = "<tr>";
+                    beforeCal += "<td>" + a.getAid() + "</td>";
+                    beforeCal += "<td>" + a.getLastName() + a.getFirstName() + "</td>";
+                    beforeCal += "<td>";
                     for (int n = 0; n < attendance.size(); n++) {
                         AttendanceBean atten = attendance.get(n);
                         for (int d = 0; d < schoolDays.size(); d++) {
@@ -91,7 +92,12 @@ public class reportTag extends SimpleTagSupport {
                             }
                         }
                     }
-                    out.println(attendedDays + "</td>");
+                    if(!schoolDays.isEmpty()){
+                        if((attendedDays * 100 / schoolDays.size())>60){
+                            continue;
+                        }
+                    }
+                    out.println(beforeCal + attendedDays + "</td>");
                     out.println("<td>");
                     if (schoolDays.isEmpty()) {
                         out.println("No School Day</td>");
@@ -109,6 +115,7 @@ public class reportTag extends SimpleTagSupport {
             } else if ("detail".equalsIgnoreCase( format)) {
                 out.println("<h1 class='h3 mb-0 text-gray-800'>Student in "+cid+"</h1>");
                 for(int i = 0; i < accounts.size(); i++){
+                    String beforeCal;
                     AccountBean a = accounts.get(i);
                     int daysAttended = 0;
                     String aCid = a.getCid() !=null ? a.getCid():"";
@@ -116,7 +123,7 @@ public class reportTag extends SimpleTagSupport {
                     if (!(aCid.equals(cid)) || aRole.equals("teacher")) {
                         continue;
                     }
-                    out.println("<div class='card shadow mb-4'>\n" +
+                    beforeCal = "<div class='card shadow mb-4'>\n" +
     "                                <div class='card-header py-3'>\n" +
     "                                    <div class='d-sm-flex align-items-center justify-content-between mb-1'>\n" +
     "                                        <h6 class='m-0 font-weight-bold text-primary'>Account ID: "+a.getAid()+"</h6>\n" +
@@ -133,20 +140,27 @@ public class reportTag extends SimpleTagSupport {
     "                                                    <th>Status</th>\n" +
     "                                                </tr>\n" +
     "                                            </thead>\n" +
-    "                                            <tbody>\n");
+    "                                            <tbody>\n";
                                                 attendance = attendb.queryAttByAid(a.getAid());
                                                 for(int n = 0; n < attendance.size(); n++){
-                                                    out.println("<tr><td>"+attendance.get(n).getDate()+"</td>");
+                                                    beforeCal += "<tr><td>"+attendance.get(n).getDate()+"</td>";
                                                     if(attendance.get(n).getStatus()){
                                                         daysAttended++;
-                                                        out.println("<td><i class=\"fas fa-check\"></i></td></tr>");
+                                                        beforeCal += "<td><i class=\"fas fa-check\"></i></td></tr>";
                                                     }else{
-                                                        out.println("<td><i class=\"fas fa-times\"></i></td></tr>");
+                                                        beforeCal += "<td><i class=\"fas fa-times\"></i></td></tr>";
                                                     }
                                                 }
-                                                out.println("<tr><th>School Days Attended/Total School Day(s)</th><th>"+daysAttended+"/"+schoolDays.size()+"</th></tr>");
-                                                out.println("<tr><th>Total Attendance Rate(%)</th><th>"+(daysAttended*100/schoolDays.size())+"%</th></tr>");
-                                                out.println("</tbody>\n" +
+                                                beforeCal += "<tr><th>School Days Attended/Total School Day(s)</th><th>"+daysAttended+"/"+schoolDays.size()+"</th></tr>";
+                                                if(schoolDays.isEmpty()){
+                                                    beforeCal += "<tr><th>Total Attendance Rate(%)</th><th>No School Day</th></tr>";
+                                                }else{
+                                                    beforeCal += "<tr><th>Total Attendance Rate(%)</th><th>"+(daysAttended*100/schoolDays.size())+"%</th></tr>";
+                                                    if((daysAttended*100/schoolDays.size())>=60){
+                                                        continue;
+                                                    }
+                                                }                                                  
+                                                out.println(beforeCal+"</tbody>\n" +
     "                                        </table>\n" +
     "                                    </div>\n" +
     "                                </div>\n" +

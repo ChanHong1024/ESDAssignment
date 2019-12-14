@@ -187,13 +187,16 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
-                        <%@ taglib uri="/WEB-INF/tlds/report.tld" prefix="ict" %>
-                        <%
-                               String date = request.getParameter("date");
-                               String format = request.getParameter("format");
-                               String checkcid = request.getParameter("cid");
-                        %>
-                        <ict:report date="<%=date%>" format="<%=format%>" cid="<%=checkcid%>" />
+                        <div id="table">
+                            <%@ taglib uri="/WEB-INF/tlds/report.tld" prefix="ict" %>
+                            <%
+                                   String date = request.getParameter("date");
+                                   String format = request.getParameter("format");
+                                   String checkcid = request.getParameter("cid");
+                            %>
+                            <ict:report date="<%=date%>" format="<%=format%>" cid="<%=checkcid%>" />
+                        </div>
+                        <a href="#" id="printBtn" onclick="printDiv();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     <!-- /.container-fluid -->
 
@@ -260,3 +263,18 @@
 <script src="js/demo/datatables-demo.js"></script> 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<script>
+    function printDiv() {
+        var divContents = document.getElementById("table").innerHTML;
+        divContents = divContents.replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>");
+        divContents = divContents.replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>");
+        var a = window.open('', '', 'height=500, width=1000');
+        a.document.write('<html>');
+        a.document.write('<body style="text-align: center;"> <h1>Attendance Records</h1><br>');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        a.print();
+    }
+
+</script>
