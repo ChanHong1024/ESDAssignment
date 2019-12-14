@@ -266,8 +266,8 @@
 <script>
     function printDiv() {
         var divContents = document.getElementById("table").innerHTML;
-        divContents = divContents.replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>").replace("<th>", "<td>");
-        divContents = divContents.replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>").replace("</th>", "</td>");
+        divContents = divContents.replace(/<th>/g, "<td>")
+        divContents = divContents.replace(/<\/th>/g, "</td>");
         var a = window.open('', '', 'height=500, width=1000');
         a.document.write('<html>');
         a.document.write('<body style="text-align: center;"> <h1>Attendance Records</h1><br>');
